@@ -715,7 +715,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _raiseObject: 1
   _buoyancyCoeff: 3
-  _boyancyTorque: 8
+  _boyancyTorque: 0
   _objectWidth: 3
   _forceHeightOffset: -0.3
   _dragInWaterUp: 3
@@ -736,7 +736,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9edc24242960f4b8a17bf38fbaf856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swimForceMultiplier: 100
+  swimForceMultiplier: 50
   logVelocity: 0
 --- !u!54 &840878848
 Rigidbody:
