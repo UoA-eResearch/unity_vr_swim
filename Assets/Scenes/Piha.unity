@@ -528,6 +528,12 @@ MonoBehaviour:
   _resolution: 384
   _cameraMaxTerrainHeight: 100
   _forceAlwaysUpdateDebug: 0
+--- !u!20 &821382451 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 2014920, guid: dc06161b6d97feb419f45f03b62e14b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 840878843}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &840878843
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1111,8 +1117,8 @@ Canvas:
   m_GameObject: {fileID: 1299902413}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 821382451}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -1120,7 +1126,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
-  m_SortingLayerID: 0
+  m_SortingLayerID: -89068729
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!224 &1299902417
