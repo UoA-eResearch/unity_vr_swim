@@ -13,7 +13,7 @@
 #define THREAD_GROUP_SIZE_Y 8
 
 // 'Current' target/source slice index
-const float _LD_SliceIndex;
+const uint _LD_SliceIndex;
 
 // Samplers and data associated with a LOD.
 // _LD_Params: float4(world texel size, texture resolution, shape weight multiplier, 1 / texture resolution)
@@ -53,7 +53,7 @@ float2 LD_WorldToUV(in float2 i_samplePos, in float2 i_centerPos, in float i_res
 	return (i_samplePos - i_centerPos) / (i_texelSize * i_res) + 0.5;
 }
 
-float3 WorldToUV(in float2 i_samplePos, in float i_sliceIndex) {
+float3 WorldToUV(in float2 i_samplePos, in uint i_sliceIndex) {
 	const float2 result = LD_WorldToUV(
 		i_samplePos,
 		_LD_Pos_Scale[i_sliceIndex].xy,
@@ -63,7 +63,7 @@ float3 WorldToUV(in float2 i_samplePos, in float i_sliceIndex) {
 	return float3(result, i_sliceIndex);
 }
 
-float3 WorldToUV_BiggerLod(in float2 i_samplePos, in float i_sliceIndex_BiggerLod) {
+float3 WorldToUV_BiggerLod(in float2 i_samplePos, in uint i_sliceIndex_BiggerLod) {
 	const float2 result = LD_WorldToUV(
 		i_samplePos, _LD_Pos_Scale[i_sliceIndex_BiggerLod].xy,
 		_LD_Params[i_sliceIndex_BiggerLod].y,
@@ -72,7 +72,7 @@ float3 WorldToUV_BiggerLod(in float2 i_samplePos, in float i_sliceIndex_BiggerLo
 	return float3(result, i_sliceIndex_BiggerLod);
 }
 
-float3 WorldToUV_Source(in float2 i_samplePos, in float i_sliceIndex_Source) {
+float3 WorldToUV_Source(in float2 i_samplePos, in uint i_sliceIndex_Source) {
 	const float2 result = LD_WorldToUV(
 		i_samplePos,
 		_LD_Pos_Scale_Source[i_sliceIndex_Source].xy,
@@ -100,6 +100,7 @@ float2 IDtoUV(in float2 i_id, in float i_width, in float i_height)
 {
 	return (i_id + 0.5) / float2(i_width, i_height);
 }
+
 
 // Sampling functions
 void SampleDisplacements(in Texture2DArray i_dispSampler, in float3 i_uv_slice, in float i_wt, inout float3 io_worldPos, inout float io_sss)
@@ -154,3 +155,27 @@ void SampleShadow(in Texture2DArray i_oceanShadowSampler, in float3 i_uv_slice, 
 // zw: normalScrollSpeed0, normalScrollSpeed1
 uniform float4 _GeomData;
 uniform float3 _OceanCenterPosWorld;
+
+void PosToSliceIndices(const float2 worldXZ, const float sliceCount, const float meshScaleLerp, const float minSlice, out uint slice0, out uint slice1, out float lodAlpha)
+{
+	const float2 offsetFromCenter = abs(worldXZ - _OceanCenterPosWorld.xz);
+	const float taxicab = max(offsetFromCenter.x, offsetFromCenter.y);
+	const float radius0 = _LD_Pos_Scale[0].z / 2.0;
+	const float sliceNumber = clamp(log2(taxicab / radius0), minSlice, sliceCount - 1.0);
+
+	lodAlpha = frac(sliceNumber);
+	slice0 = (uint)sliceNumber;
+	slice1 = slice0 + 1;
+
+	// lod alpha is remapped to ensure patches weld together properly. patches can vary significantly in shape (with
+	// strips added and removed), and this variance depends on the base density of the mesh, as this defines the strip width.
+	// using .15 as black and .85 as white should work for base mesh density as low as 16.
+	const float BLACK_POINT = 0.15, WHITE_POINT = 0.85;
+	lodAlpha = saturate((lodAlpha - BLACK_POINT) / (WHITE_POINT - BLACK_POINT));
+
+	if (slice0 == 0)
+	{
+		// blend out lod0 when viewpoint gains altitude
+		lodAlpha = min(lodAlpha + meshScaleLerp, 1.0);
+	}
+}
