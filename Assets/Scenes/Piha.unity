@@ -1149,6 +1149,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swimForceMultiplier: 50
   logVelocity: 0
+  sfo: {fileID: 840878846}
+  head: {fileID: 1793510126}
 --- !u!54 &840878848
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1537,6 +1539,12 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!1 &1793510126 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 125964, guid: dc06161b6d97feb419f45f03b62e14b9,
+    type: 3}
+  m_PrefabInstance: {fileID: 840878843}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1952892995
 PrefabInstance:
   m_ObjectHideFlags: 0

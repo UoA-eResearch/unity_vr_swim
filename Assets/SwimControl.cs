@@ -9,6 +9,9 @@ public class SwimControl : MonoBehaviour
     private SteamVR_Action_Pose poseAction;
     private Rigidbody rb;
     public bool logVelocity = false;
+    public Crest.SimpleFloatingObject sfo;
+    public GameObject head;
+
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,7 @@ public class SwimControl : MonoBehaviour
         {
             Debug.Log("vel: " + combined_velocity);
         }
+        sfo._raiseObject = 2 - head.transform.position.y;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
     }
 }

@@ -14,7 +14,7 @@ namespace Crest
     {
         [Header("Buoyancy Force")]
         [Tooltip("Offsets center of object to raise it (or lower it) in the water."), SerializeField]
-        float _raiseObject = 1f;
+        public float _raiseObject = 1f;
         [Tooltip("Strength of buoyancy force per meter of submersion in water."), SerializeField]
         float _buoyancyCoeff = 3f;
         [Tooltip("Strength of torque applied to match boat orientation to water normal."), SerializeField]
