@@ -8,10 +8,34 @@ public class CheckPlayerCollisions : MonoBehaviour
     public float ripForce = 100f;
     public GameObject deathText;
     public GameObject winText;
+    public GameObject statusText;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+    }
+
+    private void HideStatus()
+    {
+        statusText.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            ripForce -= 10;
+            statusText.SetActive(true);
+            statusText.GetComponent<TMPro.TextMeshProUGUI>().text = "rip force set to " + ripForce;
+            Invoke("HideStatus", 2);
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            ripForce += 10;
+            statusText.SetActive(true);
+            statusText.GetComponent<TMPro.TextMeshProUGUI>().text = "rip force set to " + ripForce;
+            Invoke("HideStatus", 2);
+        }
     }
 
     // Start is called before the first frame update
