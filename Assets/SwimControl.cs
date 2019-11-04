@@ -11,6 +11,8 @@ public class SwimControl : MonoBehaviour
     public bool logVelocity = false;
     public Crest.SimpleFloatingObject sfo;
     public GameObject head;
+    private float handUpTime = 0;
+    private float handDeltaThreshold = .5f;
 
 
     // Start is called before the first frame update
@@ -30,5 +32,19 @@ public class SwimControl : MonoBehaviour
         }
         sfo._raiseObject = 2 - head.transform.position.y;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
+        var leftDelta = poseAction[SteamVR_Input_Sources.LeftHand].localPosition.y - Camera.main.transform.localPosition.y;
+        var rightDelta = poseAction[SteamVR_Input_Sources.RightHand].localPosition.y - Camera.main.transform.localPosition.y;
+        Debug.Log(leftDelta + "," + rightDelta);
+        if (leftDelta > handDeltaThreshold || rightDelta > handDeltaThreshold)
+        {
+            Debug.Log("Hand is up");
+            if (Time.time - handUpTime > 10)
+            {
+                Debug.Log("hand was up for more than 10s");
+            }
+        } else
+        {
+            handUpTime = Time.time;
+        }
     }
 }
