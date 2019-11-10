@@ -56,9 +56,9 @@ public class SwimControl : MonoBehaviour
         if (handUp)
         {
             var distance = Vector3.Distance(transform.position, boat.transform.position);
-            boat.transform.LookAt(transform);
             if (distance > boatDistanceThreshold)
             {
+                boat.transform.LookAt(transform);
                 boatRb.AddForce(boat.transform.forward * boatForceMultiplier);
             }
         }
