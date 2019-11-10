@@ -1196,6 +1196,10 @@ MonoBehaviour:
   logVelocity: 0
   sfo: {fileID: 840878846}
   head: {fileID: 1793510126}
+  handUp: 0
+  boat: {fileID: 465193688}
+  boatForceMultiplier: 10
+  boatDistanceThreshold: 5
 --- !u!54 &840878848
 Rigidbody:
   m_ObjectHideFlags: 0

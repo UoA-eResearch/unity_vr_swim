@@ -13,6 +13,11 @@ public class SwimControl : MonoBehaviour
     public GameObject head;
     private float handUpTime = 0;
     private float handDeltaThreshold = .5f;
+    public bool handUp = false;
+    public GameObject boat;
+    private Rigidbody boatRb;
+    public int boatForceMultiplier = 5;
+    public int boatDistanceThreshold = 5;
 
 
     // Start is called before the first frame update
@@ -20,6 +25,7 @@ public class SwimControl : MonoBehaviour
     {
         poseAction = SteamVR_Input.GetAction<SteamVR_Action_Pose>("Pose");
         rb = GetComponent<Rigidbody>();
+        boatRb = boat.GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -41,10 +47,20 @@ public class SwimControl : MonoBehaviour
             if (Time.time - handUpTime > 10)
             {
                 Debug.Log("hand was up for more than 10s");
+                handUp = true;
             }
         } else
         {
             handUpTime = Time.time;
+        }
+        if (handUp)
+        {
+            var distance = Vector3.Distance(transform.position, boat.transform.position);
+            boat.transform.LookAt(transform);
+            if (distance > boatDistanceThreshold)
+            {
+                boatRb.AddForce(boat.transform.forward * boatForceMultiplier);
+            }
         }
     }
 }
