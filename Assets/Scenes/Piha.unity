@@ -435,7 +435,7 @@ MonoBehaviour:
   _simSettingsAnimatedWaves: {fileID: 0}
   _createSeaFloorDepthData: 1
   _createFoamSim: 1
-  _simSettingsFoam: {fileID: 11400000, guid: 8e1de4c30452ccf499882fefe206c5cd, type: 2}
+  _simSettingsFoam: {fileID: 11400000, guid: d5284a60d3902e24e92f13620663af7b, type: 2}
   _createDynamicWaveSim: 1
   _simSettingsDynamicWaves: {fileID: 11400000, guid: 2191178a667ebae4594740b717a322f6,
     type: 2}
