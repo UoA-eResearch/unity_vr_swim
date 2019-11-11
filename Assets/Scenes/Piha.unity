@@ -486,7 +486,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 131fd8c19a56d5a4ba96807822de1f0d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raiseObject: 1.7
+  _raiseObject: 2.5
   _buoyancyCoeff: 3
   _boyancyTorque: 8
   _objectWidth: 100
@@ -516,7 +516,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 16
   m_CollisionDetection: 0
 --- !u!1001 &470098406
 PrefabInstance:
@@ -2035,7 +2035,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2
+      value: 4.2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
@@ -2085,17 +2085,17 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68347086c5a517548a2031fea6f133cf, type: 3}
