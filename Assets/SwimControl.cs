@@ -12,7 +12,7 @@ public class SwimControl : MonoBehaviour
     public Crest.SimpleFloatingObject sfo;
     public GameObject head;
     private float handUpTime = 0;
-    private float handDeltaThreshold = .5f;
+    private float handDeltaThreshold = .4f;
     public bool handUp = false;
     public GameObject boat;
     private Rigidbody boatRb;
