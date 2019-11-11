@@ -18,6 +18,7 @@ public class SwimControl : MonoBehaviour
     private Rigidbody boatRb;
     public int boatForceMultiplier = 5;
     public int boatDistanceThreshold = 5;
+    public Animator lifeguardAnim;
 
 
     // Start is called before the first frame update
@@ -60,6 +61,9 @@ public class SwimControl : MonoBehaviour
             {
                 boat.transform.LookAt(transform);
                 boatRb.AddForce(boat.transform.forward * boatForceMultiplier);
+            } else
+            {
+                lifeguardAnim.SetTrigger("side");
             }
         }
     }
