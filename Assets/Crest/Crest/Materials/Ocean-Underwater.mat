@@ -9,9 +9,7 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Ocean-Underwater
   m_Shader: {fileID: 4800000, guid: 668aecf91371c8b4997e42c0c7b19527, type: 3}
-  m_ShaderKeywords: _APPLYNORMALMAPPING_ON _CLIPSURFACE_ON _COMPUTEDIRECTIONALLIGHT_ON
-    _DEBUGMULTIPLYBYLIGHT0COLOR_ON _DIRECTIONALLIGHTVARYROUGHNESS_ON _SHADOWS_ON
-    _SUBSURFACEHEIGHTLERP_ON _TRANSPARENCY_ON _UNDERWATER_ON
+  m_ShaderKeywords: _DEBUGMULTIPLYBYLIGHT0COLOR_ON _SUBSURFACEHEIGHTLERP_ON
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -79,7 +77,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _ApplyFlowToNormals: 0
-    - _ApplyNormalMapping: 1
+    - _ApplyNormalMapping: 0
     - _BumpAmt: 0.514
     - _Caustics: 0
     - _CausticsBase: 0.07
@@ -91,10 +89,10 @@ Material:
     - _CausticsStrength: 3.2
     - _CausticsTextureAverage: 0.07
     - _CausticsTextureScale: 5
-    - _ClipSurface: 1
+    - _ClipSurface: 0
     - _ClipUnderTerrain: 0
     - _CompileShaderWithDebugInfo: 0
-    - _ComputeDirectionalLight: 1
+    - _ComputeDirectionalLight: 0
     - _CullMode: 0
     - _DebugDisableMultiplyByLight0Color: 0
     - _DebugDisableShapeTextures: 0
@@ -107,7 +105,7 @@ Material:
     - _DirectionalLightFallOff: 188
     - _DirectionalLightFallOffFar: 42
     - _DirectionalLightFarDistance: 137
-    - _DirectionalLightVaryRoughness: 1
+    - _DirectionalLightVaryRoughness: 0
     - _Flow: 0
     - _Foam: 0
     - _Foam3DLighting: 0
@@ -132,7 +130,7 @@ Material:
     - _RefractiveIndexOfWater: 1.333
     - _Roughness: 0
     - _S: 1
-    - _Shadows: 1
+    - _Shadows: 0
     - _ShorelineFoamMinDepth: 0.27
     - _SkyDirectionality: 0.875
     - _Specular: 1
@@ -150,8 +148,8 @@ Material:
     - _SubSurfaceSunFallOff: 5.26
     - _TexelSize: 0.125
     - _TextureRes: 1024
-    - _Transparency: 1
-    - _Underwater: 1
+    - _Transparency: 0
+    - _Underwater: 0
     - _Update: 0.083
     - _WaveFoamBubblesCoverage: 1.68
     - _WaveFoamBubblesFeather: 0.32

@@ -30,6 +30,8 @@ public class SwimControl : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         boatRb = boat.GetComponent<Rigidbody>();
+        lastLeftPosition = leftHand.position;
+        lastRightPosition = rightHand.position;
     }
 
     // Update is called once per frame
@@ -39,8 +41,8 @@ public class SwimControl : MonoBehaviour
         lastLeftPosition = leftHand.position;
         var rightVelocity = (rightHand.position - lastRightPosition).magnitude / Time.deltaTime;
         lastRightPosition = rightHand.position;
-        var combined_velocity = leftVelocity + rightVelocity;
-        speedReadout.text = string.Format("{0} m/s", combined_velocity);
+        var combined_velocity = Mathf.Clamp(leftVelocity + rightVelocity, 0, 2);
+        speedReadout.text = string.Format("{0:0.00} m/s", combined_velocity);
         sfo._raiseObject = 2 - head.transform.position.y;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
         var leftDelta = leftHand.position.y - Camera.main.transform.position.y;
