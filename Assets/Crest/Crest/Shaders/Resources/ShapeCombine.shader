@@ -20,17 +20,19 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 			CGPROGRAM
 			#pragma vertex Vert
 			#pragma fragment Frag
-			
-			#pragma multi_compile __ _DYNAMIC_WAVE_SIM_ON
-			#pragma multi_compile __ _FLOW_ON
+
+			#pragma multi_compile __ CREST_DYNAMIC_WAVE_SIM_ON_INTERNAL
+			#pragma multi_compile __ CREST_FLOW_ON_INTERNAL
 
 			#include "UnityCG.cginc"
-			#include "../OceanLODData.hlsl"
+
+			#include "../OceanGlobals.hlsl"
+			#include "../OceanInputsDriven.hlsl"
+			#include "../OceanHelpersNew.hlsl"
 			#include "../FullScreenTriangle.hlsl"
 
 			float _HorizDisplace;
 			float _DisplaceClamp;
-			float _CrestTime;
 
 			struct Attributes
 			{
@@ -66,46 +68,47 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 				float3 uv_thisLod = float3(input.uv, _LD_SliceIndex);
 
 				// go from uv out to world for the current shape texture
-				const float2 worldPosXZ = UVToWorld(input.uv);
+				const float2 worldPosXZ = UVToWorld(input.uv, _LD_SliceIndex, _LD_Pos_Scale[_LD_SliceIndex], _LD_Params[_LD_SliceIndex]);
 
 				// sample the shape 1 texture at this world pos
-				const float3 uv_nextLod = WorldToUV_BiggerLod(worldPosXZ);
+				const uint si = _LD_SliceIndex + 1;
+				const float3 uv_nextLod = WorldToUV(worldPosXZ, _LD_Pos_Scale[si], _LD_Params[si], si);
 
 				float3 result = 0.0;
-				float sss = 0.0;
+				half sss = 0.0;
 
-#if _FLOW_ON
-				float2 flow = 0.0;
+#if CREST_FLOW_ON_INTERNAL
+				half2 flow = 0.0;
 				SampleFlow(_LD_TexArray_Flow, uv_thisLod, 1.0, flow);
 
 				float2 offsets, weights;
 				Flow(offsets, weights);
 
-				float3 uv_thisLod_flow_0 = WorldToUV(worldPosXZ - offsets[0] * flow);
-				float3 uv_thisLod_flow_1 = WorldToUV(worldPosXZ - offsets[1] * flow);
+				const float3 uv_thisLod_flow_0 = WorldToUV(worldPosXZ - offsets[0] * flow, _LD_Pos_Scale[_LD_SliceIndex], _LD_Params[_LD_SliceIndex], _LD_SliceIndex);
+				const float3 uv_thisLod_flow_1 = WorldToUV(worldPosXZ - offsets[1] * flow, _LD_Pos_Scale[_LD_SliceIndex], _LD_Params[_LD_SliceIndex], _LD_SliceIndex);
 				SampleDisplacements(_LD_TexArray_WaveBuffer, uv_thisLod_flow_0, weights[0], result, sss);
 				SampleDisplacements(_LD_TexArray_WaveBuffer, uv_thisLod_flow_1, weights[1], result, sss);
 #else
 				float4 data = _LD_TexArray_WaveBuffer.SampleLevel(LODData_linear_clamp_sampler, uv_thisLod, 0.0);
 				result += data.xyz;
 				sss = data.w;
-#endif
+#endif // CREST_FLOW_ON_INTERNAL
 
-				uint arrayDepth;
+				float arrayDepth;
 				{
-					uint w, h;
+					float w, h;
 					_LD_TexArray_AnimatedWaves.GetDimensions(w, h, arrayDepth);
 				}
 
 				// waves to combine down from the next lod up the chain
-				if (_LD_SliceIndex < arrayDepth - 1)
+				if ((float)_LD_SliceIndex < arrayDepth - 1.0)
 				{
 					float4 dataNextLod = _LD_TexArray_AnimatedWaves.SampleLevel(LODData_linear_clamp_sampler, uv_nextLod, 0.0);
 					result += dataNextLod.xyz;
 					sss += dataNextLod.w;
 				}
 
-#if _DYNAMIC_WAVE_SIM_ON
+#if CREST_DYNAMIC_WAVE_SIM_ON_INTERNAL
 				{
 					// convert dynamic wave sim to displacements
 
@@ -130,7 +133,7 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 
 					result.xz += dispXZ;
 				}
-#endif // _DYNAMIC_WAVE_SIM_ON
+#endif // CREST_DYNAMIC_WAVE_SIM_ON_INTERNAL
 
 				return half4(result, sss);
 			}
@@ -147,7 +150,8 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 			#pragma fragment Frag
 
 			#include "UnityCG.cginc"
-			#include "../OceanLODData.hlsl"
+
+			#include "../OceanGlobals.hlsl"
 			#include "../FullScreenTriangle.hlsl"
 
 			Texture2D _CombineBuffer;
@@ -170,13 +174,12 @@ Shader "Hidden/Crest/Simulation/Combine Animated Wave LODs"
 				o.uv = GetFullScreenTriangleTexCoord(input.VertexID);
 				return o;
 			}
-			
+
 			half4 Frag(Varyings input) : SV_Target
 			{
 				return _CombineBuffer.SampleLevel(LODData_point_clamp_sampler, input.uv, 0.0);
 			}
 			ENDCG
 		}
-
 	}
 }

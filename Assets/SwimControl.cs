@@ -1,12 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
 
 public class SwimControl : MonoBehaviour
 {
     public int swimForceMultiplier = 100;
-    private SteamVR_Action_Pose poseAction;
     private Rigidbody rb;
     public bool logVelocity = false;
     public Crest.SimpleFloatingObject sfo;
@@ -24,7 +22,6 @@ public class SwimControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        poseAction = SteamVR_Input.GetAction<SteamVR_Action_Pose>("Pose");
         rb = GetComponent<Rigidbody>();
         boatRb = boat.GetComponent<Rigidbody>();
     }
@@ -32,16 +29,15 @@ public class SwimControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var combined_velocity = poseAction[SteamVR_Input_Sources.LeftHand].velocity.magnitude + poseAction[SteamVR_Input_Sources.RightHand].velocity.magnitude;
+        var combined_velocity = 0;//poseAction[SteamVR_Input_Sources.LeftHand].velocity.magnitude + poseAction[SteamVR_Input_Sources.RightHand].velocity.magnitude;
         if (logVelocity)
         {
             Debug.Log("vel: " + combined_velocity);
         }
         sfo._raiseObject = 2 - head.transform.position.y;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
-        var leftDelta = poseAction[SteamVR_Input_Sources.LeftHand].localPosition.y - Camera.main.transform.localPosition.y;
-        var rightDelta = poseAction[SteamVR_Input_Sources.RightHand].localPosition.y - Camera.main.transform.localPosition.y;
-        Debug.Log(leftDelta + "," + rightDelta);
+        var leftDelta = 0;//poseAction[SteamVR_Input_Sources.LeftHand].localPosition.y - Camera.main.transform.localPosition.y;
+        var rightDelta = 0;//poseAction[SteamVR_Input_Sources.RightHand].localPosition.y - Camera.main.transform.localPosition.y;
         if (leftDelta > handDeltaThreshold || rightDelta > handDeltaThreshold)
         {
             Debug.Log("Hand is up");
