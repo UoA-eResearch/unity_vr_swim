@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SwimControl : MonoBehaviour
 {
     public int swimForceMultiplier = 100;
     private Rigidbody rb;
-    public bool logVelocity = false;
     public Crest.SimpleFloatingObject sfo;
     public GameObject head;
     private float handUpTime = 0;
@@ -18,7 +18,13 @@ public class SwimControl : MonoBehaviour
     public int boatDistanceThreshold = 5;
     public Animator lifeguardAnim;
 
+    public Transform leftHand;
+    public Transform rightHand;
+    public TextMeshPro speedReadout;
 
+    private Vector3 lastLeftPosition;
+    private Vector3 lastRightPosition;
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -29,15 +35,16 @@ public class SwimControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        var combined_velocity = 0;//poseAction[SteamVR_Input_Sources.LeftHand].velocity.magnitude + poseAction[SteamVR_Input_Sources.RightHand].velocity.magnitude;
-        if (logVelocity)
-        {
-            Debug.Log("vel: " + combined_velocity);
-        }
+        var leftVelocity = (leftHand.position - lastLeftPosition).magnitude / Time.deltaTime;
+        lastLeftPosition = leftHand.position;
+        var rightVelocity = (rightHand.position - lastRightPosition).magnitude / Time.deltaTime;
+        lastRightPosition = rightHand.position;
+        var combined_velocity = leftVelocity + rightVelocity;
+        speedReadout.text = string.Format("{0} m/s", combined_velocity);
         sfo._raiseObject = 2 - head.transform.position.y;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
-        var leftDelta = 0;//poseAction[SteamVR_Input_Sources.LeftHand].localPosition.y - Camera.main.transform.localPosition.y;
-        var rightDelta = 0;//poseAction[SteamVR_Input_Sources.RightHand].localPosition.y - Camera.main.transform.localPosition.y;
+        var leftDelta = leftHand.position.y - Camera.main.transform.position.y;
+        var rightDelta = rightHand.position.y - Camera.main.transform.position.y;
         if (leftDelta > handDeltaThreshold || rightDelta > handDeltaThreshold)
         {
             Debug.Log("Hand is up");
