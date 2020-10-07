@@ -170,7 +170,7 @@ PlayerSettings:
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
-    Android: nz.ac.auckland.eresearch
+    Android: nz.ac.auckland.eresearch.vr_swimming_test
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 25
