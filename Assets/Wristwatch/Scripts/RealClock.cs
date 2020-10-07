@@ -6,6 +6,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class RealClock : MonoBehaviour {
 	public Transform Hours;
@@ -16,6 +17,15 @@ public class RealClock : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 	}
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "right_hand")
+        {
+            Debug.Log("watch tap " + other.name);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {
