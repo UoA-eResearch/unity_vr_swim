@@ -9,10 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Ocean-Underwater
   m_Shader: {fileID: 4800000, guid: 668aecf91371c8b4997e42c0c7b19527, type: 3}
-  m_ShaderKeywords: _APPLYNORMALMAPPING_ON _CAUSTICS_ON _CLIPSURFACE_ON _COMPUTEDIRECTIONALLIGHT_ON
-    _DEBUGMULTIPLYBYLIGHT0COLOR_ON _DIRECTIONALLIGHTVARYROUGHNESS_ON _FOAM3DLIGHTING_ON
-    _FOAM_ON _SHADOWS_ON _SUBSURFACEHEIGHTLERP_ON _SUBSURFACESCATTERING_ON _SUBSURFACESHALLOWCOLOUR_ON
-    _TRANSPARENCY_ON _UNDERWATER_ON
+  m_ShaderKeywords: _APPLYNORMALMAPPING_ON _DEBUGMULTIPLYBYLIGHT0COLOR_ON _DIRECTIONALLIGHTVARYROUGHNESS_ON
+    _SHADOWS_ON _SUBSURFACEHEIGHTLERP_ON _TRANSPARENCY_ON _UNDERWATER_ON
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -82,7 +80,7 @@ Material:
     - _ApplyFlowToNormals: 0
     - _ApplyNormalMapping: 1
     - _BumpAmt: 0.514
-    - _Caustics: 1
+    - _Caustics: 0
     - _CausticsBase: 0.07
     - _CausticsBias: 0.7
     - _CausticsDepthOfField: 0.33
@@ -92,10 +90,10 @@ Material:
     - _CausticsStrength: 3.2
     - _CausticsTextureAverage: 0.07
     - _CausticsTextureScale: 5
-    - _ClipSurface: 1
+    - _ClipSurface: 0
     - _ClipUnderTerrain: 0
     - _CompileShaderWithDebugInfo: 0
-    - _ComputeDirectionalLight: 1
+    - _ComputeDirectionalLight: 0
     - _CullMode: 0
     - _DebugDisableMultiplyByLight0Color: 0
     - _DebugDisableShapeTextures: 0
@@ -110,8 +108,8 @@ Material:
     - _DirectionalLightFarDistance: 137
     - _DirectionalLightVaryRoughness: 1
     - _Flow: 0
-    - _Foam: 1
-    - _Foam3DLighting: 1
+    - _Foam: 0
+    - _Foam3DLighting: 0
     - _FoamBubbleParallax: 0.14
     - _FoamScale: 10
     - _ForceUnderwater: 0
@@ -145,8 +143,8 @@ Material:
     - _SubSurfaceHeightLerp: 1
     - _SubSurfaceHeightMax: 24.9
     - _SubSurfaceHeightPower: 1.68
-    - _SubSurfaceScattering: 1
-    - _SubSurfaceShallowColour: 1
+    - _SubSurfaceScattering: 0
+    - _SubSurfaceShallowColour: 0
     - _SubSurfaceSun: 4.46
     - _SubSurfaceSunFallOff: 5.26
     - _TexelSize: 0.125
