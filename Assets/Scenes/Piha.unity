@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9edc24242960f4b8a17bf38fbaf856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swimForceMultiplier: 100
+  swimForceMultiplier: 1000
   sfo: {fileID: 215909757}
   head: {fileID: 586248893}
   handUp: 0
@@ -3022,7 +3022,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 20
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0

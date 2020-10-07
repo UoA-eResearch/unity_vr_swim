@@ -45,12 +45,12 @@ public class SwimControl : MonoBehaviour
         speedReadout.text = string.Format("{0:0.00} m/s", combined_velocity);
         sfo._raiseObject = combined_velocity;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
-        var leftDelta = leftHand.position.y - Camera.main.transform.position.y;
-        var rightDelta = rightHand.position.y - Camera.main.transform.position.y;
+        var leftDelta = leftHand.localPosition.y - Camera.main.transform.localPosition.y;
+        var rightDelta = rightHand.localPosition.y - Camera.main.transform.localPosition.y;
         if (leftDelta > handDeltaThreshold || rightDelta > handDeltaThreshold)
         {
             Debug.Log("Hand is up");
-            if ((Time.time - handUpTime) > 5)
+            if ((Time.time - handUpTime) > 2)
             {
                 Debug.Log("hand was up for more than threshold");
                 handUp = true;
