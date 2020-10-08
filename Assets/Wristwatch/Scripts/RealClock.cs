@@ -20,7 +20,7 @@ public class RealClock : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.name.EndsWith("_CapsuleCollider"))
+        if (other.name.EndsWith("_CapsuleCollider") || other.name == "GrabVolumeSmall" || other.name == "hands_coll:b_r_index3")
         {
             Debug.Log("watch tap " + other.name);
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
