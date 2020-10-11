@@ -47,7 +47,7 @@ public class SwimControl : MonoBehaviour
         var combined_velocity = Mathf.Clamp(leftVelocity + rightVelocity, 0, 2);
         speedReadout.text = string.Format("{0:0.00} m/s", combined_velocity);
         speedReadout2.text = string.Format("{0:0.00} m/s", combined_velocity);
-        sfo._raiseObject = combined_velocity;
+        sfo._raiseObject = combined_velocity - .5f;
         rb.AddForce(Camera.main.transform.forward * combined_velocity * swimForceMultiplier);
         var leftDelta = leftHand.localPosition.y - Camera.main.transform.localPosition.y;
         var rightDelta = rightHand.localPosition.y - Camera.main.transform.localPosition.y;
