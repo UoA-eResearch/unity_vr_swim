@@ -10,7 +10,7 @@ public class SwimControl : MonoBehaviour
     public Crest.SimpleFloatingObject sfo;
     public GameObject head;
     private float handUpTime = 0;
-    private float handDeltaThreshold = .4f;
+    private float handDeltaThreshold = .2f;
     public bool handUp = false;
     public GameObject boat;
     private Rigidbody boatRb;
@@ -25,6 +25,8 @@ public class SwimControl : MonoBehaviour
 
     private Vector3 lastLeftPosition;
     private Vector3 lastRightPosition;
+
+    public AudioSource boatMotor;
     
     // Start is called before the first frame update
     void Start()
@@ -56,6 +58,7 @@ public class SwimControl : MonoBehaviour
             {
                 Debug.Log("hand was up for more than threshold");
                 handUp = true;
+                boatMotor.Play();
             }
         } else
         {

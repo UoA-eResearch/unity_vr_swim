@@ -5,7 +5,7 @@ using UnityEngine;
 public class CheckPlayerCollisions : MonoBehaviour
 {
     private Rigidbody rb;
-    public float ripForce = 100f;
+    public float ripForce = 50f;
     public GameObject deathText;
     public GameObject winText;
     public GameObject statusText;

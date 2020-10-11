@@ -980,7 +980,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f028b55e8058a93439baf997088ae48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ripForce: 100
+  ripForce: 50
   deathText: {fileID: 770765707}
   winText: {fileID: 774902080}
   statusText: {fileID: 1375984745}
@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9edc24242960f4b8a17bf38fbaf856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swimForceMultiplier: 300
+  swimForceMultiplier: 500
   sfo: {fileID: 215909757}
   head: {fileID: 586248893}
   handUp: 0
@@ -1008,6 +1008,7 @@ MonoBehaviour:
   rightHand: {fileID: 1548915873}
   speedReadout: {fileID: 250560617}
   speedReadout2: {fileID: 955443404}
+  boatMotor: {fileID: 916296777}
 --- !u!114 &215909757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3136,7 +3137,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 358d981f90538e141bb487c87e7a210d, type: 3}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 1
@@ -3146,7 +3147,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 20
+  MaxDistance: 500
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -3192,8 +3193,8 @@ AudioSource:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.7929047
-      value: 0.031066895
+      time: 0.795163
+      value: 0.057495117
       inSlope: -0.16721657
       outSlope: -0.16721657
       tangentMode: 0
@@ -3202,7 +3203,7 @@ AudioSource:
       outWeight: 0.9290776
     - serializedVersion: 3
       time: 1
-      value: 0
+      value: 0.036346436
       inSlope: -0.05001994
       outSlope: -0.05001994
       tangentMode: 0
@@ -4335,6 +4336,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 80, z: 0}
+--- !u!1 &1529868962 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7728317479965012042, guid: 68347086c5a517548a2031fea6f133cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1967939008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1529868966
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1529868962}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4680333755631109814, guid: 68347086c5a517548a2031fea6f133cf, type: 3}
 --- !u!1 &1548915872
 GameObject:
   m_ObjectHideFlags: 0
@@ -4584,6 +4605,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1582063151 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -2924862470578812583, guid: 68347086c5a517548a2031fea6f133cf,
+    type: 3}
+  m_PrefabInstance: {fileID: 1967939008}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &1582063155
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1582063151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5291055741022000013, guid: 68347086c5a517548a2031fea6f133cf, type: 3}
 --- !u!1001 &1627981106
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5173,7 +5214,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.1
+      value: -13.4
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
@@ -5183,7 +5224,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.9
+      value: -3.2
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 68347086c5a517548a2031fea6f133cf,
         type: 3}
@@ -5244,6 +5285,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: rescue boat
+      objectReference: {fileID: 0}
+    - target: {fileID: 1058750584569780819, guid: 68347086c5a517548a2031fea6f133cf,
+        type: 3}
+      propertyPath: m_Convex
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68347086c5a517548a2031fea6f133cf, type: 3}
