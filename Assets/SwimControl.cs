@@ -71,7 +71,7 @@ public class SwimControl : MonoBehaviour
             {
                 var target = new Vector3(transform.position.x, boat.transform.position.y, transform.position.z + 5);
                 boat.transform.LookAt(target);
-                boatRb.AddForce(boat.transform.forward * boatForceMultiplier);
+                boatRb.AddForce(boat.transform.forward * boatForceMultiplier, ForceMode.Acceleration);
             } else
             {
                 lifeguardAnim.SetTrigger("side");
