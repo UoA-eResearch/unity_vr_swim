@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 330773058}
-  m_IndirectSpecularColor: {r: 0.49188873, g: 0.5800497, b: 0.6811274, a: 1}
+  m_IndirectSpecularColor: {r: 0.49009633, g: 0.5782511, b: 0.68289965, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -996,7 +996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9edc24242960f4b8a17bf38fbaf856, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swimForceMultiplier: 500
+  swimForceMultiplier: 100
   sfo: {fileID: 215909757}
   head: {fileID: 586248893}
   handUp: 0

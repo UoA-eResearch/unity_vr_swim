@@ -54,7 +54,7 @@ public class SwimControl : MonoBehaviour
         if (leftDelta > handDeltaThreshold || rightDelta > handDeltaThreshold)
         {
             Debug.Log("Hand is up");
-            if ((Time.time - handUpTime) > 2)
+            if ((Time.time - handUpTime) > 1)
             {
                 Debug.Log("hand was up for more than threshold");
                 handUp = true;
