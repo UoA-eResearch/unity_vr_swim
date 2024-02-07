@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SwimControl : MonoBehaviour
 {
-    public int swimForceMultiplier = 100;
+    public int swimForceMultiplier = 20;
     private Rigidbody rb;
     public Crest.SimpleFloatingObject sfo;
     public GameObject head;

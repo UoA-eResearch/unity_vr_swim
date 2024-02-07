@@ -11,7 +11,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 using System.Collections.Generic;
-using UnityEditor.Experimental.SceneManagement;
+
 #endif
 
 namespace Crest
@@ -53,7 +53,7 @@ namespace Crest
         {
 #if UNITY_EDITOR
             // We don't run in "prefab scenes", i.e. when editing a prefab. Bail out if prefab scene is detected.
-            if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
             {
                 return;
             }
@@ -96,7 +96,7 @@ namespace Crest
         {
 #if UNITY_EDITOR
             // We don't run in "prefab scenes", i.e. when editing a prefab. Bail out if prefab scene is detected.
-            if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
             {
                 return;
             }
