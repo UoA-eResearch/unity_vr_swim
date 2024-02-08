@@ -1,0 +1,5 @@
+/Users/jbri364/Documents/GitHub/unity_vr_swim/.utmp/RelWithDebInfo/2t5o454f/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/jbri364/Documents/GitHub/unity_vr_swim/.utmp/RelWithDebInfo/2t5o454f/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/jbri364/Documents/GitHub/unity_vr_swim/.utmp/RelWithDebInfo/2t5o454f/arm64-v8a/GameActivity/CMakeFiles/game.dir
+/Users/jbri364/Documents/GitHub/unity_vr_swim/.utmp/RelWithDebInfo/2t5o454f/arm64-v8a/GameActivity/CMakeFiles/edit_cache.dir
+/Users/jbri364/Documents/GitHub/unity_vr_swim/.utmp/RelWithDebInfo/2t5o454f/arm64-v8a/GameActivity/CMakeFiles/rebuild_cache.dir
