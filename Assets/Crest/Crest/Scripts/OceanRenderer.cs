@@ -8,7 +8,7 @@ using Unity.Collections.LowLevel.Unsafe;
 #if UNITY_EDITOR
 using UnityEngine.Rendering;
 using UnityEditor;
-using UnityEditor.Experimental.SceneManagement;
+
 #endif
 
 #if !UNITY_2019_4_OR_NEWER
@@ -334,7 +334,7 @@ namespace Crest
         {
             // We don't run in "prefab scenes", i.e. when editing a prefab. Bail out if prefab scene is detected.
 #if UNITY_EDITOR
-            if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
             {
                 return;
             }
@@ -411,7 +411,7 @@ namespace Crest
         {
 #if UNITY_EDITOR
             // We don't run in "prefab scenes", i.e. when editing a prefab. Bail out if prefab scene is detected.
-            if (PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
             {
                 return;
             }
