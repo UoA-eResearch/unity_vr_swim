@@ -24,10 +24,7 @@ Shader "Crest/Underwater Meniscus"
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#pragma multi_compile_instancing
-
 			#include "UnityCG.cginc"
-			#include "Lighting.cginc"
 
 			#include "../OceanGlobals.hlsl"
 			#include "../OceanInputsDriven.hlsl"
@@ -68,9 +65,9 @@ Shader "Crest/Underwater Meniscus"
 				UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
 
 				// view coordinate frame for camera
-				const float3 right = unity_CameraToWorld._11_21_31;
-				const float3 up = unity_CameraToWorld._12_22_32;
-				const float3 forward = unity_CameraToWorld._13_23_33;
+				const float3 right   = UNITY_MATRIX_I_V._11_21_31;
+				const float3 up      = UNITY_MATRIX_I_V._12_22_32;
+				const float3 forward = -UNITY_MATRIX_I_V._13_23_33;
 
 				const float3 nearPlaneCenter = _WorldSpaceCameraPos + forward * _ProjectionParams.y * 1.001;
 				// Spread verts across the near plane.
@@ -110,7 +107,7 @@ Shader "Crest/Underwater Meniscus"
 
 				return o;
 			}
-			
+
 			half4 Frag(Varyings input) : SV_Target
 			{
 				const half3 col = 1.3*half3(0.37, 0.4, 0.5);

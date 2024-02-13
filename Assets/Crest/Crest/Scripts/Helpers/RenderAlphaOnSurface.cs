@@ -10,8 +10,21 @@ namespace Crest
     /// Helper script for alpha geometry rendering on top of ocean surface. This is required to select the best
     /// LOD and assign the shape texture to the material.
     /// </summary>
-    public class RenderAlphaOnSurface : MonoBehaviour
+    [ExecuteDuringEditMode]
+    [RequireComponent(typeof(Renderer))]
+    [RequireComponent(typeof(MeshFilter))]
+    [AddComponentMenu(Internal.Constants.MENU_PREFIX_SCRIPTS + "Render Alpha On Surface")]
+    public partial class RenderAlphaOnSurface : CustomMonoBehaviour
     {
+        /// <summary>
+        /// The version of this asset. Can be used to migrate across versions. This value should
+        /// only be changed when the editor upgrades the version.
+        /// </summary>
+        [SerializeField, HideInInspector]
+#pragma warning disable 414
+        int _version = 0;
+#pragma warning restore 414
+
         public bool _drawBounds = false;
 
         PropertyWrapperMPB _mpb;
@@ -22,7 +35,7 @@ namespace Crest
         private void Start()
         {
             _rend = GetComponent<Renderer>();
-            _mesh = GetComponent<MeshFilter>().mesh;
+            _mesh = GetComponent<MeshFilter>().sharedMesh;
             _boundsLocal = _mesh.bounds;
 
             if (OceanRenderer.Instance != null)
@@ -78,4 +91,15 @@ namespace Crest
             }
         }
     }
+
+#if UNITY_EDITOR
+    public partial class RenderAlphaOnSurface : IValidated
+    {
+        public bool Validate(OceanRenderer ocean, ValidatedHelper.ShowMessage showMessage)
+        {
+            ValidatedHelper.ValidateRendererLayer(gameObject, showMessage, ocean);
+            return true;
+        }
+    }
+#endif
 }

@@ -15,7 +15,7 @@ C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-61037
+55635
 -job-worker-count
 15
 -background-job-worker-count
@@ -58,13 +58,13 @@ C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gi-baking-worker=262144"
     "memorysetup-temp-allocator-size-gfx=262144"
-Player connection [20720] Host "[IP] 130.216.44.223 [Port] 0 [Flags] 2 [Guid] 573725431 [EditorId] 573725431 [Version] 1048832 [Id] WindowsEditor(7,VRDesktop1) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
-Player connection [20720] Host "[IP] 130.216.44.223 [Port] 0 [Flags] 2 [Guid] 573725431 [EditorId] 573725431 [Version] 1048832 [Id] WindowsEditor(7,VRDesktop1) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [10352] Host "[IP] 130.216.44.223 [Port] 0 [Flags] 2 [Guid] 2836977250 [EditorId] 2836977250 [Version] 1048832 [Id] WindowsEditor(7,VRDesktop1) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [10352] Host "[IP] 130.216.44.223 [Port] 0 [Flags] 2 [Guid] 2836977250 [EditorId] 2836977250 [Version] 1048832 [Id] WindowsEditor(7,VRDesktop1) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 15
 [Physics::Module] Initialized MultithreadedJobDispatcher with 15 workers.
 Library Redirect Path: Library/
-Refreshing native plugins compatible for Editor in 3.54 ms, found 10 plugins.
-Preloading 3 native plugins for Editor in 1.79 ms.
+Refreshing native plugins compatible for Editor in 6.21 ms, found 10 plugins.
+Preloading 3 native plugins for Editor in 2.60 ms.
 Initialize engine version: 2023.2.8f1 (a3bb09f8c8c4)
 [Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/Resources/UnitySubsystems
 [Subsystems] Discovering subsystems at path C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim/Assets
@@ -81,7 +81,7 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56204
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56832
 Begin MonoManager ReloadAssembly
 C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
 C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
@@ -98,45 +98,45 @@ Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/E
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
-Registered in 0.002983 seconds.
-- Loaded All Assemblies, in  0.235 seconds
+Registered in 0.004734 seconds.
+- Loaded All Assemblies, in  0.283 seconds
 Native extension for Android target not found
-Android Extension - Scanning For ADB Devices 146 ms
+Android Extension - Scanning For ADB Devices 223 ms
 Native extension for UWP target not found
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
 Mono: successfully reloaded assembly
 C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
 C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
-- Finished resetting the current domain, in  0.368 seconds
-Domain Reload Profiling: 603ms
-	BeginReloadAssembly (74ms)
+- Finished resetting the current domain, in  0.485 seconds
+Domain Reload Profiling: 767ms
+	BeginReloadAssembly (88ms)
 		ExecutionOrderSort (0ms)
 		DisableScriptedObjects (0ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
 		CreateAndSetChildDomain (0ms)
-	RebuildCommonClasses (23ms)
-	RebuildNativeTypeToScriptingClass (7ms)
-	initialDomainReloadingComplete (30ms)
-	LoadAllAssembliesAndSetupDomain (99ms)
-		LoadAssemblies (74ms)
+	RebuildCommonClasses (27ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (38ms)
+	LoadAllAssembliesAndSetupDomain (120ms)
+		LoadAssemblies (87ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (97ms)
-			TypeCache.Refresh (96ms)
-				TypeCache.ScanAssembly (88ms)
+		AnalyzeDomain (118ms)
+			TypeCache.Refresh (117ms)
+				TypeCache.ScanAssembly (107ms)
 			BuildScriptInfoCaches (0ms)
 			ResolveRequiredComponents (0ms)
-	FinalizeReload (369ms)
+	FinalizeReload (486ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (337ms)
+		SetupLoadedEditorAssemblies (447ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (219ms)
+			InitializePlatformSupportModulesInManaged (309ms)
 			SetLoadedEditorAssemblies (2ms)
-			BeforeProcessingInitializeOnLoad (4ms)
-			ProcessInitializeOnLoadAttributes (84ms)
-			ProcessInitializeOnLoadMethodAttributes (28ms)
+			BeforeProcessingInitializeOnLoad (5ms)
+			ProcessInitializeOnLoadAttributes (98ms)
+			ProcessInitializeOnLoadMethodAttributes (33ms)
 			AfterProcessingInitializeOnLoad (0ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
@@ -158,10 +158,10 @@ C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
 C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
 C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
 Symbol file LoadedFromMemory is not a mono symbol file
-- Loaded All Assemblies, in  0.442 seconds
+- Loaded All Assemblies, in  0.566 seconds
 'Assets/Crest/Crest/Scripts/LodData/RegisterLodDataInput.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
 'Assets/Crest/Crest/Scripts/LodData/RegisterLodDataInput.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
-Refreshing native plugins compatible for Editor in 2.86 ms, found 10 plugins.
+Refreshing native plugins compatible for Editor in 3.31 ms, found 10 plugins.
 Native extension for Android target not found
 Native extension for UWP target not found
 Native extension for WindowsStandalone target not found
@@ -194,62 +194,86 @@ Mono: successfully reloaded assembly
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
-- Finished resetting the current domain, in  0.390 seconds
-Domain Reload Profiling: 831ms
-	BeginReloadAssembly (181ms)
+- Finished resetting the current domain, in  0.471 seconds
+Domain Reload Profiling: 1034ms
+	BeginReloadAssembly (226ms)
 		ExecutionOrderSort (0ms)
-		DisableScriptedObjects (3ms)
+		DisableScriptedObjects (5ms)
 		BackupInstance (0ms)
 		ReleaseScriptingObjects (0ms)
-		CreateAndSetChildDomain (19ms)
-	RebuildCommonClasses (21ms)
-	RebuildNativeTypeToScriptingClass (8ms)
-	initialDomainReloadingComplete (22ms)
-	LoadAllAssembliesAndSetupDomain (209ms)
-		LoadAssemblies (171ms)
+		CreateAndSetChildDomain (21ms)
+	RebuildCommonClasses (28ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (26ms)
+	LoadAllAssembliesAndSetupDomain (275ms)
+		LoadAssemblies (225ms)
 		RebuildTransferFunctionScriptingTraits (0ms)
-		AnalyzeDomain (96ms)
-			TypeCache.Refresh (73ms)
-				TypeCache.ScanAssembly (62ms)
-			BuildScriptInfoCaches (15ms)
-			ResolveRequiredComponents (5ms)
-	FinalizeReload (391ms)
+		AnalyzeDomain (118ms)
+			TypeCache.Refresh (89ms)
+				TypeCache.ScanAssembly (77ms)
+			BuildScriptInfoCaches (19ms)
+			ResolveRequiredComponents (7ms)
+	FinalizeReload (472ms)
 		ReleaseScriptCaches (0ms)
 		RebuildScriptCaches (0ms)
-		SetupLoadedEditorAssemblies (301ms)
+		SetupLoadedEditorAssemblies (367ms)
 			LogAssemblyErrors (0ms)
-			InitializePlatformSupportModulesInManaged (12ms)
+			InitializePlatformSupportModulesInManaged (14ms)
 			SetLoadedEditorAssemblies (2ms)
-			BeforeProcessingInitializeOnLoad (26ms)
-			ProcessInitializeOnLoadAttributes (217ms)
-			ProcessInitializeOnLoadMethodAttributes (41ms)
-			AfterProcessingInitializeOnLoad (2ms)
+			BeforeProcessingInitializeOnLoad (35ms)
+			ProcessInitializeOnLoadAttributes (260ms)
+			ProcessInitializeOnLoadMethodAttributes (52ms)
+			AfterProcessingInitializeOnLoad (3ms)
 			EditorAssembliesLoaded (0ms)
 		ExecutionOrderSort2 (0ms)
-		AwakeInstancesAfterBackupRestoration (4ms)
-Shader 'Scene/HighlightsAndShadows': fallback shader 'Off' not found
+		AwakeInstancesAfterBackupRestoration (5ms)
 Shader 'Oculus/OVRMRCameraFrameLit': fallback shader 'Alpha-Diffuse' not found
+Shader 'Scene/HighlightsAndShadows': fallback shader 'Off' not found
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
-Refreshing native plugins compatible for Editor in 2.89 ms, found 10 plugins.
-Preloading 3 native plugins for Editor in 0.07 ms.
-Unloading 136 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 3292 unused Assets / (1.4 MB). Loaded Objects now: 3956.
-Memory consumption went from 158.6 MB to 157.2 MB.
-Total: 3.880300 ms (FindLiveObjects: 0.278300 ms CreateObjectMapping: 0.156000 ms MarkObjects: 2.715300 ms  DeleteObjects: 0.730000 ms)
+Refreshing native plugins compatible for Editor in 4.35 ms, found 10 plugins.
+Preloading 3 native plugins for Editor in 0.10 ms.
+Unloading 164 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3348 unused Assets / (2.0 MB). Loaded Objects now: 4030.
+Memory consumption went from 170.4 MB to 168.4 MB.
+Total: 4.346400 ms (FindLiveObjects: 0.457600 ms CreateObjectMapping: 0.253200 ms MarkObjects: 2.904400 ms  DeleteObjects: 0.730400 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 1149.169956 seconds.
-  path: Assets/SwimControl.cs
-  artifactKey: Guid(5c9edc24242960f4b8a17bf38fbaf856) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/SwimControl.cs using Guid(5c9edc24242960f4b8a17bf38fbaf856) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2ca81bca8d8921ccd422c0f87bbeda39') in 0.003914 seconds
+  Time since last request: 9875.203933 seconds.
+  path: Assets/Crest/Crest/Textures/Foam2.png
+  artifactKey: Guid(02e417d5711139342884479f53dbecea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Crest/Crest/Textures/Foam2.png using Guid(02e417d5711139342884479f53dbecea) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'c14e9e334973bdd27dbe72efd8a9b2f0') in 0.0542621 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000013 seconds.
+  path: Assets/Crest/Crest/Textures/WaveNormals/WaveNormals.png
+  artifactKey: Guid(800e061692ff7a84e887f439d3364410) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Crest/Crest/Textures/WaveNormals/WaveNormals.png using Guid(800e061692ff7a84e887f439d3364410) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '2e377800c9739734083d3fefff438763') in 0.0165931 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 370.045449 seconds.
+  path: Assets/XR
+  artifactKey: Guid(724f6aada10ce784bb7296c2ba276bcb) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/XR using Guid(724f6aada10ce784bb7296c2ba276bcb) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '0f364650aa0499e36b0b741ef00328cd') in 0.000781 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
 
 ========================================================================
 Received Import Request.
-  Time since last request: 0.000036 seconds.
-  path: Assets/CustomFoamSettings.asset
-  artifactKey: Guid(d5284a60d3902e24e92f13620663af7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/CustomFoamSettings.asset using Guid(d5284a60d3902e24e92f13620663af7b) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: '18c49af3490b25f5377091cb76924196') in 0.0117287 seconds
+  Time since last request: 4.374843 seconds.
+  path: Assets/Sim_Settings_Animated_Waves.asset
+  artifactKey: Guid(7dcb797da7b6eef4ebecdf58ed2014ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sim_Settings_Animated_Waves.asset using Guid(7dcb797da7b6eef4ebecdf58ed2014ea) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'efe357103e5f51b0f40fbd3c2d87a15d') in 0.0013205 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 19.162310 seconds.
+  path: Assets/Sim_Settings_Flow.asset
+  artifactKey: Guid(949804f8e267268479f12cf47f8791c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Sim_Settings_Flow.asset using Guid(949804f8e267268479f12cf47f8791c8) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (artifact id: 'f63a3d4f86c9c7c6c4ab15e18568adcf') in 0.0008412 seconds
 Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
 

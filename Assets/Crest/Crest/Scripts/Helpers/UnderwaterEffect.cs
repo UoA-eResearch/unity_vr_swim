@@ -7,12 +7,9 @@
 // branch will arrive before then though.
 
 using UnityEngine;
-
-#if UNITY_EDITOR
+using static Crest.UnderwaterRenderer;
 using UnityEditor;
 using System.Collections.Generic;
-
-#endif
 
 namespace Crest
 {
@@ -20,8 +17,20 @@ namespace Crest
     /// Handles effects that need to track the water surface. Feeds in wave data and disables rendering when
     /// not close to water.
     /// </summary>
-    public partial class UnderwaterEffect : MonoBehaviour
+    [ExecuteDuringEditMode]
+    [System.Obsolete("No longer supported. UnderwaterEffect has been replaced with UnderwaterRenderer.")]
+    [AddComponentMenu(Internal.Constants.MENU_PREFIX_SCRIPTS + "Underwater Effect")]
+    public partial class UnderwaterEffect : CustomMonoBehaviour
     {
+        /// <summary>
+        /// The version of this asset. Can be used to migrate across versions. This value should
+        /// only be changed when the editor upgrades the version.
+        /// </summary>
+        [SerializeField, HideInInspector]
+#pragma warning disable 414
+        int _version = 0;
+#pragma warning restore 414
+
         [Header("Copy params from Ocean material")]
         [Tooltip("Copy ocean material settings on each frame, to ensure consistent appearance between underwater effect and ocean surface. This should be turned off if you are not changing the ocean material values every frame."), SerializeField]
         bool _copyParamsEachFrame = true;
@@ -46,25 +55,25 @@ namespace Crest
         readonly int sp_HeightOffset = Shader.PropertyToID("_HeightOffset");
 
         SampleHeightHelper _sampleWaterHeight = new SampleHeightHelper();
+        internal readonly UnderwaterSphericalHarmonicsData _sphericalHarmonicsData = new UnderwaterSphericalHarmonicsData();
 
         bool isMeniscus;
 
+        bool _hasCopiedMaterial;
+
         private void Start()
         {
-#if UNITY_EDITOR
-            // We don't run in "prefab scenes", i.e. when editing a prefab. Bail out if prefab scene is detected.
-            if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
+            if (!TryGetComponent<Renderer>(out var _rend))
             {
+                Debug.LogError($"Crest: No renderer attached to <i>{this}</i>. Please attach on or use the prefab.");
                 return;
             }
-#endif
-            _rend = GetComponent<Renderer>();
 
             // Render before the surface mesh
             _rend.sortingOrder = _overrideSortingOrder ? _overridenSortingOrder : -LodDataMgr.MAX_LOD_COUNT - 1;
             GetComponent<MeshFilter>().sharedMesh = Mesh2DGrid(0, 2, -0.5f, -0.5f, 1f, 1f, GEOM_HORIZ_DIVISIONS, 1);
 
-            isMeniscus = _rend.material.shader.name.Contains("Meniscus");
+            isMeniscus = _rend.sharedMaterial.shader.name.Contains("Meniscus");
 
 #if UNITY_EDITOR
             if (EditorApplication.isPlaying && !Validate(OceanRenderer.Instance, ValidatedHelper.DebugLog))
@@ -81,30 +90,61 @@ namespace Crest
             ConfigureMaterial();
         }
 
-        void ConfigureMaterial()
+        void OnDisable()
         {
-            if (OceanRenderer.Instance == null) return;
-
-            // Only execute when playing to stop CopyPropertiesFromMaterial from corrupting and breaking the material.
-            if (!isMeniscus)
-            {
-                _rend.material.CopyPropertiesFromMaterial(OceanRenderer.Instance.OceanMaterial);
-            }
+            Shader.DisableKeyword("CREST_UNDERWATER_BEFORE_TRANSPARENT");
         }
 
-        private void LateUpdate()
+#if UNITY_EDITOR
+        bool _hasBeenVisible;
+
+        // OnBecameVisible stops working after a build is triggered.
+        void OnWillRenderObject()
+        {
+            _hasBeenVisible = true;
+        }
+#endif
+
+        void ConfigureMaterial()
         {
 #if UNITY_EDITOR
-            // We don't run in "prefab scenes", i.e. when editing a prefab. Bail out if prefab scene is detected.
-            if (UnityEditor.SceneManagement.PrefabStageUtility.GetCurrentPrefabStage() != null)
+            // If CopyPropertiesFromMaterial is called before the mesh has become visible, then it will corrupt the
+            // shader/material. It will always be visible except when loading the editor and only the scene view is
+            // active and the mesh is not in view of the scene camera. This is not a problem in standalone.
+            if (!_hasBeenVisible)
             {
                 return;
             }
 #endif
 
-            if (OceanRenderer.Instance == null || !ShowEffect())
+            if (!_copyParamsEachFrame && _hasCopiedMaterial)
             {
-                _rend.enabled = false;
+                return;
+            }
+
+            if (isMeniscus)
+            {
+                return;
+            }
+
+            if (OceanRenderer.Instance.OceanMaterial == null)
+            {
+                return;
+            }
+
+            _rend.sharedMaterial.CopyPropertiesFromMaterial(OceanRenderer.Instance.OceanMaterial);
+            _hasCopiedMaterial = true;
+        }
+
+        private void LateUpdate()
+        {
+            if (OceanRenderer.Instance == null || _rend == null || !ShowEffect())
+            {
+                if (_rend != null)
+                {
+                    _rend.enabled = false;
+                }
+
                 return;
             }
 
@@ -122,11 +162,9 @@ namespace Crest
 
             if (_rend.enabled)
             {
-                // Only execute when playing to stop CopyPropertiesFromMaterial from corrupting and breaking the material.
-                if (!isMeniscus && _copyParamsEachFrame)
-                {
-                    _rend.material.CopyPropertiesFromMaterial(OceanRenderer.Instance.OceanMaterial);
-                }
+                ConfigureMaterial();
+
+                Shader.EnableKeyword("CREST_UNDERWATER_BEFORE_TRANSPARENT");
 
                 // Assign lod0 shape - trivial but bound every frame because lod transform comes from here
                 if (_mpb == null)
@@ -137,14 +175,23 @@ namespace Crest
 
                 // Underwater rendering uses displacements for intersecting the waves with the near plane, and ocean depth/shadows for ScatterColour()
                 _mpb.SetInt(LodDataMgr.sp_LD_SliceIndex, 0);
-
-                LodDataMgrAnimWaves.Bind(_mpb);
-                LodDataMgrSeaFloorDepth.Bind(_mpb);
-                LodDataMgrShadow.Bind(_mpb);
-
                 _mpb.SetFloat(sp_HeightOffset, heightOffset);
 
                 _rend.SetPropertyBlock(_mpb.materialPropertyBlock);
+
+                // Compute ambient lighting SH.
+                if (!isMeniscus)
+                {
+                    // We could pass in a renderer which would prime this lookup. However it doesnt make sense to use an existing render
+                    // at different position, as this would then thrash it and negate the priming functionality. We could create a dummy invis GO
+                    // with a dummy Renderer which might be enough, but this is hacky enough that we'll wait for it to become a problem
+                    // rather than add a pre-emptive hack.
+                    UnityEngine.Profiling.Profiler.BeginSample("Underwater Sample Spherical Harmonics");
+                    LightProbes.GetInterpolatedProbe(transform.position, null, out var sphericalHarmonicsL2);
+                    sphericalHarmonicsL2.Evaluate(_sphericalHarmonicsData._shDirections, _sphericalHarmonicsData._ambientLighting);
+                    Helpers.SetShaderVector(_rend.sharedMaterial, UnderwaterRenderer.ShaderIDs.s_CrestAmbientLighting, _sphericalHarmonicsData._ambientLighting[0], true);
+                    UnityEngine.Profiling.Profiler.EndSample();
+                }
             }
         }
 
@@ -218,7 +265,6 @@ namespace Crest
             }
 
             var mesh = new Mesh();
-            mesh.hideFlags = HideFlags.DontSave;
             mesh.name = "Grid2D_" + divs0 + "x" + divs1;
             mesh.vertices = verts;
             mesh.uv = uvs;
@@ -244,28 +290,38 @@ namespace Crest
         {
             var isValid = true;
 
-            // Check that underwater effect is parented to a camera.
-            if (!transform.parent || transform.parent.GetComponent<Camera>() == null)
+            if (UnderwaterRenderer.Instance != null)
             {
                 showMessage
                 (
-                    "Underwater effects expect to be parented to a camera.",
+                    "Both <i>Underwater Effect</i> (deprecated) and <i>Underwater Renderer</i> are active.",
+                    "Remove the <i>Underwater Effect</i> by removing the entire game object.",
                     ValidatedHelper.MessageType.Error, this
                 );
 
                 isValid = false;
             }
 
-            // Check that underwater effect has correct material assigned.
-            var shaderPrefix = "Crest/Underwater";
-            var renderer = GetComponent<Renderer>();
-            if (renderer.sharedMaterial && renderer.sharedMaterial.shader && !renderer.sharedMaterial.shader.name.StartsWith(shaderPrefix))
+            // Check that underwater effect is parented to a camera.
+            if (!transform.parent || !transform.parent.TryGetComponent<Camera>(out _))
             {
                 showMessage
                 (
-                    $"Shader assigned to underwater effect expected to be of type <i>{shaderPrefix}</i>.",
+                    "Underwater effects expect to be parented to a camera.",
+                    "Parent this GameObject underneath a GameObject that has a <i>Camera</i> component attached.",
                     ValidatedHelper.MessageType.Error, this
                 );
+
+                isValid = false;
+            }
+
+            ValidatedHelper.ValidateRendererLayer(gameObject, showMessage, ocean);
+
+            // Check that underwater effect has correct material assigned.
+            var shaderPrefix = "Crest/Underwater";
+            if (TryGetComponent<Renderer>(out var renderer) && renderer.sharedMaterial && renderer.sharedMaterial.shader && !renderer.sharedMaterial.shader.name.StartsWithNoAlloc(shaderPrefix))
+            {
+                ValidatedHelper.ValidateMaterial(gameObject, showMessage, renderer.sharedMaterial, shaderPrefix);
 
                 isValid = false;
             }
@@ -276,8 +332,6 @@ namespace Crest
                 var keywords = renderer.sharedMaterial.shaderKeywords;
                 foreach (var keyword in keywords)
                 {
-                    if (keyword == "_COMPILESHADERWITHDEBUGINFO_ON") continue;
-
                     if (!ocean.OceanMaterial.IsKeywordEnabled(keyword))
                     {
                         showMessage
@@ -285,6 +339,7 @@ namespace Crest
                             $"Keyword {keyword} was enabled on the underwater material <i>{renderer.sharedMaterial.name}</i>"
                             + $"but not on the ocean material <i>{ocean.OceanMaterial.name}</i>, underwater appearance "
                             + "may not match ocean surface in standalone builds.",
+                            "Compare the toggles on the ocean material and the underwater material and ensure they match.",
                             ValidatedHelper.MessageType.Warning, this
                         );
                     }
@@ -294,7 +349,6 @@ namespace Crest
                 keywords = ocean.OceanMaterial.shaderKeywords;
                 foreach (var keyword in keywords)
                 {
-                    if (keyword == "_COMPILESHADERWITHDEBUGINFO_ON") continue;
                     if (!sharedKeywords.Contains(keyword)) continue;
 
                     if (!renderer.sharedMaterial.IsKeywordEnabled(keyword))
@@ -304,6 +358,7 @@ namespace Crest
                             $"Keyword {keyword} is enabled on the ocean material <i>{ocean.OceanMaterial.name}</i> but "
                             + $"not on the underwater material <i>{renderer.sharedMaterial.name}</i>, underwater "
                             + "appearance may not match ocean surface in standalone builds.",
+                            "Compare the toggles on the ocean material and the underwater material and ensure they match.",
                             ValidatedHelper.MessageType.Warning, this
                         );
                     }
@@ -313,8 +368,5 @@ namespace Crest
             return isValid;
         }
     }
-
-    [CustomEditor(typeof(UnderwaterEffect)), CanEditMultipleObjects]
-    class UnderwaterEffectEditor : ValidatedEditor { }
 #endif
 }

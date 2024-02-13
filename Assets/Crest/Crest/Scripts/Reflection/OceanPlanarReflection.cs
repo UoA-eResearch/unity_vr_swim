@@ -64,9 +64,7 @@ namespace Crest
                 .Append(new KeyValuePair<int, RenderTexture>(instanceId, reflectionTexture)).ToArray();
         }
 
-#if UNITY_2019_3_OR_NEWER
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-#endif
         static void InitStatics()
         {
             // Init here from 2019.3 onwards
@@ -79,8 +77,18 @@ namespace Crest
     /// <summary>
     /// Attach to a camera to generate a reflection texture which can be sampled in the ocean shader.
     /// </summary>
-    public class OceanPlanarReflection : MonoBehaviour
+    [AddComponentMenu(Internal.Constants.MENU_PREFIX_SCRIPTS + "Ocean Planar Reflections")]
+    public class OceanPlanarReflection : CustomMonoBehaviour
     {
+        /// <summary>
+        /// The version of this asset. Can be used to migrate across versions. This value should
+        /// only be changed when the editor upgrades the version.
+        /// </summary>
+        [SerializeField, HideInInspector]
+#pragma warning disable 414
+        int _version = 0;
+#pragma warning restore 414
+
         [SerializeField] LayerMask _reflectionLayers = 1;
         [SerializeField] bool _disableOcclusionCulling = true;
         [SerializeField] bool _disablePixelLights = true;
@@ -110,6 +118,7 @@ namespace Crest
         Camera _camViewpoint;
         Skybox _camViewpointSkybox;
         Camera _camReflections;
+        public Camera ReflectionCamera => _camReflections;
         Skybox _camReflectionsSkybox;
 
         private long _lastRefreshOnFrame = -1;
@@ -125,14 +134,13 @@ namespace Crest
                 return;
             }
 
-            _camViewpoint = GetComponent<Camera>();
-            if (!_camViewpoint)
+            if (!TryGetComponent(out _camViewpoint))
             {
-                Debug.LogWarning("Disabling planar reflections as no camera found on gameobject to generate reflection from.", this);
+                Debug.LogWarning("Crest: Disabling planar reflections as no camera found on gameobject to generate reflection from.", this);
                 enabled = false;
                 return;
             }
-            _camViewpointSkybox = _camViewpoint?.GetComponent<Skybox>();
+            _camViewpointSkybox = _camViewpoint.GetComponent<Skybox>();
 
             // This is anyway called in OnPreRender, but was required here as there was a black reflection
             // for a frame without this earlier setup call.
@@ -141,24 +149,12 @@ namespace Crest
 #if UNITY_EDITOR
             if (!OceanRenderer.Instance.OceanMaterial.IsKeywordEnabled("_PLANARREFLECTIONS_ON"))
             {
-                Debug.LogWarning("Planar reflections are not enabled on the current ocean material and will not be visible.", this);
+                Debug.LogWarning("Crest: Planar reflections are not enabled on the current ocean material and will not be visible.", this);
             }
 #endif
         }
 
-        bool RequestRefresh(long frame)
-        {
-            if (_lastRefreshOnFrame <= 0 || RefreshPerFrames < 2)
-                return true; // Not refreshed before or refresh every frame, not check frame counter
-            return Math.Abs(_frameRefreshOffset) % RefreshPerFrames == frame % RefreshPerFrames;
-        }
-
-        void Refreshed(long currentframe)
-        {
-            _lastRefreshOnFrame = currentframe;
-        }
-
-        private void OnPreRender()
+        void LateUpdate()
         {
             if (!RequestRefresh(Time.renderedFrameCount))
                 return; // Skip if not need to refresh on this frame
@@ -225,7 +221,12 @@ namespace Crest
 
             ForceDistanceCulling(_farClipPlane);
 
+            // We do not want the water plane when rendering planar reflections.
+            OceanRenderer.Instance.Root.gameObject.SetActive(false);
+
             _camReflections.Render();
+
+            OceanRenderer.Instance.Root.gameObject.SetActive(true);
 
             GL.invertCulling = oldCulling;
 
@@ -241,9 +242,25 @@ namespace Crest
                 QualitySettings.pixelLightCount = oldPixelLightCount;
             }
 
-            Refreshed(Time.renderedFrameCount); //remember this frame as last refreshed
+            // Remember this frame as last refreshed.
+            Refreshed(Time.renderedFrameCount);
         }
 
+        bool RequestRefresh(long frame)
+        {
+            if (_lastRefreshOnFrame <= 0 || RefreshPerFrames < 2)
+            {
+                // Not refreshed before or refresh every frame, not check frame counter.
+                return true;
+            }
+
+            return Math.Abs(_frameRefreshOffset) % RefreshPerFrames == frame % RefreshPerFrames;
+        }
+
+        void Refreshed(long currentframe)
+        {
+            _lastRefreshOnFrame = currentframe;
+        }
 
         /// <summary>
         /// Limit render distance for reflection camera for first 32 layers
@@ -264,6 +281,8 @@ namespace Crest
 
         void UpdateCameraModes()
         {
+            _camReflections.cullingMask = _reflectionLayers;
+
             // Set water camera to clear the same way as current camera
             _camReflections.renderingPath = _forceForwardRenderingPath ? RenderingPath.Forward : _camViewpoint.renderingPath;
             _camReflections.backgroundColor = new Color(0f, 0f, 0f, 0f);
@@ -304,16 +323,15 @@ namespace Crest
             {
                 if (_reflectionTexture)
                 {
-                    DestroyImmediate(_reflectionTexture);
+                    Helpers.Destroy(_reflectionTexture);
                 }
 
                 var format = _hdr ? RenderTextureFormat.ARGBHalf : RenderTextureFormat.ARGB32;
-                Debug.Assert(SystemInfo.SupportsRenderTextureFormat(format), "The graphics device does not support the render texture format " + format.ToString());
+                Debug.Assert(SystemInfo.SupportsRenderTextureFormat(format), "Crest: The graphics device does not support the render texture format " + format.ToString());
                 _reflectionTexture = new RenderTexture(_textureSize, _textureSize, _stencil ? 24 : 16, format)
                 {
                     name = "__WaterReflection" + GetHashCode(),
                     isPowerOfTwo = true,
-                    hideFlags = HideFlags.DontSave
                 };
                 _reflectionTexture.Create();
                 PreparedReflections.Register(currentCamera.GetHashCode(), _reflectionTexture);
@@ -322,21 +340,15 @@ namespace Crest
             // Camera for reflection
             if (!_camReflections)
             {
-                GameObject go = new GameObject("Water Refl Cam");
-                _camReflections = go.AddComponent<Camera>();
+                _camReflections = new GameObject("Crest Water Reflection Camera").AddComponent<Camera>();
                 _camReflections.enabled = false;
-                _camReflections.transform.position = transform.position;
-                _camReflections.transform.rotation = transform.rotation;
-                _camReflections.cullingMask = _reflectionLayers;
+                _camReflections.transform.SetPositionAndRotation(transform.position, transform.rotation);
                 _camReflectionsSkybox = _camReflections.gameObject.AddComponent<Skybox>();
                 _camReflections.gameObject.AddComponent<FlareLayer>();
                 _camReflections.cameraType = CameraType.Reflection;
-
-                if (_hideCameraGameobject)
-                {
-                    go.hideFlags = HideFlags.HideAndDontSave;
-                }
             }
+
+            _camReflections.gameObject.hideFlags = _hideCameraGameobject ? HideFlags.HideAndDontSave : HideFlags.DontSave;
         }
 
         // Given position/normal of the plane, calculates plane in camera space.
@@ -383,12 +395,12 @@ namespace Crest
             // Cleanup all the objects we possibly have created
             if (_reflectionTexture)
             {
-                Destroy(_reflectionTexture);
+                Helpers.Destroy(_reflectionTexture);
                 _reflectionTexture = null;
             }
             if (_camReflections)
             {
-                Destroy(_camReflections.gameObject);
+                Helpers.Destroy(_camReflections.gameObject);
                 _camReflections = null;
             }
         }

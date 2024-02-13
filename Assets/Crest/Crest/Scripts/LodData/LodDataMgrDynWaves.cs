@@ -3,6 +3,8 @@
 // This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
 
 using UnityEngine;
+using UnityEngine.Experimental.Rendering;
+using UnityEngine.Rendering;
 
 namespace Crest
 {
@@ -13,40 +15,34 @@ namespace Crest
     /// </summary>
     public class LodDataMgrDynWaves : LodDataMgrPersistent
     {
-        protected override string ShaderSim { get { return "UpdateDynWaves"; } }
-        protected override int krnl_ShaderSim { get { return _shader.FindKernel(ShaderSim); } }
+        protected override string ShaderSim => "UpdateDynWaves";
+        protected override int krnl_ShaderSim => _shader.FindKernel(ShaderSim);
 
-        public override string SimName { get { return "DynamicWaves"; } }
-        public override RenderTextureFormat TextureFormat { get { return RenderTextureFormat.RGHalf; } }
+        public override string SimName => "DynamicWaves";
+        protected override GraphicsFormat RequestedTextureFormat => GraphicsFormat.R16G16_SFloat;
+        static Texture2DArray s_nullTexture => TextureArrayHelpers.BlackTextureArray;
+        protected override Texture2DArray NullTexture => s_nullTexture;
 
         public bool _rotateLaplacian = true;
 
+        public const string FEATURE_TOGGLE_NAME = "_createDynamicWaveSim";
+        public const string FEATURE_TOGGLE_LABEL = "Create Dynamic Wave Sim";
         public const string DYNWAVES_KEYWORD = "CREST_DYNAMIC_WAVE_SIM_ON_INTERNAL";
 
         bool[] _active;
-        public bool SimActive(int lodIdx) { return _active[lodIdx]; }
+        public bool SimActive(int lodIdx) => _active[lodIdx];
 
         readonly int sp_HorizDisplace = Shader.PropertyToID("_HorizDisplace");
         readonly int sp_DisplaceClamp = Shader.PropertyToID("_DisplaceClamp");
         readonly int sp_Damping = Shader.PropertyToID("_Damping");
         readonly int sp_Gravity = Shader.PropertyToID("_Gravity");
-        readonly int sp_LaplacianAxisX = Shader.PropertyToID("_LaplacianAxisX");
+        readonly int sp_CourantNumber = Shader.PropertyToID("_CourantNumber");
+        readonly int sp_AttenuationInShallows = Shader.PropertyToID("_AttenuationInShallows");
 
-        SettingsType _defaultSettings;
-        public SettingsType Settings
-        {
-            get
-            {
-                if (_ocean._simSettingsDynamicWaves != null) return _ocean._simSettingsDynamicWaves;
+        public override SimSettingsBase SettingsBase => Settings;
+        public SettingsType Settings => _ocean._simSettingsDynamicWaves != null ? _ocean._simSettingsDynamicWaves : GetDefaultSettings<SettingsType>();
 
-                if (_defaultSettings == null)
-                {
-                    _defaultSettings = ScriptableObject.CreateInstance<SettingsType>();
-                    _defaultSettings.name = SimName + " Auto-generated Settings";
-                }
-                return _defaultSettings;
-            }
-        }
+        public float TimeLeftToSimulate => _timeToSimulate;
 
         public LodDataMgrDynWaves(OceanRenderer ocean) : base(ocean)
         {
@@ -81,7 +77,7 @@ namespace Crest
                 return false;
 
             // check if the sim should be running
-            float texelWidth = OceanRenderer.Instance._lodTransform._renderData[lodIdx].Validate(0, SimName)._texelWidth;
+            float texelWidth = OceanRenderer.Instance._lodTransform._renderData[lodIdx].Current.Validate(0, SimName)._texelWidth;
             _active[lodIdx] = texelWidth >= Settings._minGridSize && (texelWidth <= Settings._maxGridSize || Settings._maxGridSize == 0f);
 
             return true;
@@ -99,14 +95,27 @@ namespace Crest
 
             simMaterial.SetFloat(sp_Damping, Settings._damping);
             simMaterial.SetFloat(sp_Gravity, OceanRenderer.Instance.Gravity * Settings._gravityMultiplier);
-
-            float laplacianKernelAngle = _rotateLaplacian ? Mathf.PI * 2f * Random.value : 0f;
-            simMaterial.SetVector(sp_LaplacianAxisX, new Vector2(Mathf.Cos(laplacianKernelAngle), Mathf.Sin(laplacianKernelAngle)));
+            simMaterial.SetFloat(sp_CourantNumber, Settings._courantNumber);
+            simMaterial.SetFloat(sp_AttenuationInShallows, Settings._attenuationInShallows);
+            simMaterial.SetVector(OceanRenderer.sp_oceanCenterPosWorld, OceanRenderer.Instance.Root.position);
 
             // assign sea floor depth - to slot 1 current frame data. minor bug here - this depth will actually be from the previous frame,
             // because the depth is scheduled to render just before the animated waves, and this sim happens before animated waves.
             LodDataMgrSeaFloorDepth.Bind(simMaterial);
             LodDataMgrFlow.Bind(simMaterial);
+        }
+
+        protected override void SubmitDraws(int lodIdx, CommandBuffer buffer)
+        {
+            base.SubmitDraws(lodIdx, buffer);
+
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+#endif
+            {
+                // SWI needs special handling. They are not registered like other inputs.
+                SphereWaterInteraction.SubmitDraws(this, lodIdx, buffer);
+            }
         }
 
         public static void CountWaveSims(int countFrom, out int o_present, out int o_active)
@@ -122,38 +131,16 @@ namespace Crest
             }
         }
 
-        float MaxSimDt(int lodIdx)
+        protected override void GetSimSubstepData(float timeToSimulate, out int numSubsteps, out float substepDt)
         {
-            var ocean = OceanRenderer.Instance;
-
-            // Limit timestep based on Courant constant: https://www.uio.no/studier/emner/matnat/ifi/nedlagte-emner/INF2340/v05/foiler/sim04.pdf
-            var Cmax = Settings._courantNumber;
-            var minWavelength = ocean._lodTransform.MaxWavelength(lodIdx) / 2f;
-            var waveSpeed = OceanWaveSpectrum.ComputeWaveSpeed(minWavelength, Settings._gravityMultiplier);
-            // 0.5f because its 2D
-            var maxDt = 0.5f * Cmax * ocean.CalcGridSize(lodIdx) / waveSpeed;
-            return maxDt;
-        }
-
-        public override void GetSimSubstepData(float frameDt, out int numSubsteps, out float substepDt)
-        {
-            // lod 0 will always be most demanding - wave speed is square root of wavelength, so waves will be fast relative to stability in
-            // lowest lod, and slow relative to stability in largest lod.
-            float maxDt = MaxSimDt(0);
-
-            numSubsteps = Mathf.CeilToInt(frameDt / maxDt);
-            // Always do at least one step so that the sim moves around when time is frozen
-            numSubsteps = Mathf.Clamp(numSubsteps, 1, Settings._maxSimStepsPerFrame);
-            substepDt = Mathf.Min(maxDt, frameDt / numSubsteps);
+            numSubsteps = Mathf.FloorToInt(timeToSimulate * Settings._simulationFrequency);
+            substepDt = numSubsteps > 0 ? (1f / Settings._simulationFrequency) : 0f;
         }
 
         readonly static string s_textureArrayName = "_LD_TexArray_DynamicWaves";
         private static TextureArrayParamIds s_textureArrayParamIds = new TextureArrayParamIds(s_textureArrayName);
-        public static int ParamIdSampler(bool sourceLod = false) { return s_textureArrayParamIds.GetId(sourceLod); }
-        protected override int GetParamIdSampler(bool sourceLod = false)
-        {
-            return ParamIdSampler(sourceLod);
-        }
+        public static int ParamIdSampler(bool sourceLod = false) => s_textureArrayParamIds.GetId(sourceLod);
+        protected override int GetParamIdSampler(bool sourceLod = false) => ParamIdSampler(sourceLod);
 
         public static void Bind(IPropertyWrapper properties)
         {
@@ -163,13 +150,13 @@ namespace Crest
             }
             else
             {
-                properties.SetTexture(ParamIdSampler(), TextureArrayHelpers.BlackTextureArray);
+                properties.SetTexture(ParamIdSampler(), s_nullTexture);
             }
         }
 
-#if UNITY_2019_3_OR_NEWER
+        public static void BindNullToGraphicsShaders() => Shader.SetGlobalTexture(ParamIdSampler(), s_nullTexture);
+
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-#endif
         static void InitStatics()
         {
             // Init here from 2019.3 onwards

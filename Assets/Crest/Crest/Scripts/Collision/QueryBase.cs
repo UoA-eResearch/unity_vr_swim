@@ -25,7 +25,8 @@ namespace Crest
         protected abstract string QueryShaderName { get; }
         protected abstract string QueryKernelName { get; }
 
-        const int s_maxRequests = 4;
+        // 4 was enough for a long time, but Linux setups seems to demand 7
+        const int s_maxRequests = 7;
         const int s_maxGuids = 1024;
 
         protected virtual ComputeShader ShaderProcessQueries => _shaderProcessQueries;
@@ -97,7 +98,7 @@ namespace Crest
                         // can happen if the Scene and Game view are not visible, in which case async readbacks dont get processed
                         // and the pipeline blocks up.
 #if !UNITY_EDITOR
-                        Debug.LogError("Query ring buffer exhausted. Please report this to developers.");
+                        Debug.LogError("Crest: Query ring buffer exhausted. Please report this to developers.");
 #endif
                         return;
                     }
@@ -234,7 +235,7 @@ namespace Crest
             _shaderProcessQueries = ComputeShaderHelpers.LoadShader(QueryShaderName);
             if (_shaderProcessQueries == null)
             {
-                Debug.LogError($"Could not load Query compute shader {QueryShaderName}");
+                Debug.LogError($"Crest: Could not load Query compute shader {QueryShaderName}");
                 return;
             }
             _kernelHandle = _shaderProcessQueries.FindKernel(QueryKernelName);
@@ -251,19 +252,18 @@ namespace Crest
         {
             if (queryPoints.Length + _segmentRegistrarRingBuffer.Current._numQueries > _maxQueryCount)
             {
-                Debug.LogError($"Max query count ({_maxQueryCount}) exceeded, increase the max query count in the Animated Waves Settings to support a higher number of queries.");
+                Debug.LogError($"Crest: Max query count ({_maxQueryCount}) exceeded, increase the max query count in the Animated Waves Settings to support a higher number of queries.");
                 return false;
             }
 
             var segmentRetrieved = false;
-            Vector3Int segment;
 
             // We'll send in 3 points to get normals
             var countPts = (queryPoints != null ? queryPoints.Length : 0);
             var countNorms = (queryNormals != null ? queryNormals.Length : 0);
             var countTotal = countPts + countNorms * 3;
 
-            if (_segmentRegistrarRingBuffer.Current._segments.TryGetValue(i_ownerHash, out segment))
+            if (_segmentRegistrarRingBuffer.Current._segments.TryGetValue(i_ownerHash, out var segment))
             {
                 var segmentSize = segment.y - segment.x + 1;
                 if (segmentSize == countTotal)
@@ -290,7 +290,7 @@ namespace Crest
             {
                 if (_segmentRegistrarRingBuffer.Current._segments.Count >= s_maxGuids)
                 {
-                    Debug.LogError("Too many guids registered with CollProviderCompute. Increase s_maxGuids.");
+                    Debug.LogError("Crest: Too many guids registered with CollProviderCompute. Increase s_maxGuids.");
                     return false;
                 }
 
@@ -301,17 +301,18 @@ namespace Crest
 
                 _segmentRegistrarRingBuffer.Current._numQueries += countTotal;
 
-                //Debug.Log("Added points for " + guid);
+                //Debug.Log("Crest: Added points for " + guid);
             }
 
             // The smallest wavelengths should repeat no more than twice across the smaller spatial length. Unless we're
             // in the last LOD - then this is the best we can do.
             float minWavelength = i_minSpatialLength / 2f;
-            float minGridSize = minWavelength / OceanRenderer.Instance.MinTexelsPerWave;
+            float samplesPerWave = 2f;
+            float minGridSize = minWavelength / samplesPerWave;
 
             if (countPts + segment.x > _queryPosXZ_minGridSize.Length)
             {
-                Debug.LogError("Too many wave height queries. Increase Max Query Count in the Animated Waves Settings.");
+                Debug.LogError("Crest: Too many wave height queries. Increase Max Query Count in the Animated Waves Settings.");
                 return false;
             }
 
@@ -371,8 +372,7 @@ namespace Crest
             }
 
             // Check if there are results that came back for this guid
-            Vector3Int segment;
-            if (!_resultSegments.TryGetValue(guid, out segment))
+            if (!_resultSegments.TryGetValue(guid, out var segment))
             {
                 // Guid not found - no result
                 return false;
@@ -432,14 +432,12 @@ namespace Crest
                 return 1;
             }
 
-            Vector3Int segment;
-            if (!_resultSegments.TryGetValue(i_ownerHash, out segment))
+            if (!_resultSegments.TryGetValue(i_ownerHash, out var segment))
             {
                 return (int)QueryStatus.RetrieveFailed;
             }
 
-            Vector3Int segmentLast;
-            if (!_resultSegmentsLast.TryGetValue(i_ownerHash, out segmentLast))
+            if (!_resultSegmentsLast.TryGetValue(i_ownerHash, out var segmentLast))
             {
                 return (int)QueryStatus.NotEnoughDataForVels;
             }
@@ -530,7 +528,7 @@ namespace Crest
             if (lastDoneIndex >= 0)
             {
                 // Update "last" results
-                LodDataMgr.Swap(ref _queryResults, ref _queryResultsLast);
+                Helpers.Swap(ref _queryResults, ref _queryResultsLast);
                 _queryResultsTimeLast = _queryResultsTime;
                 _resultSegmentsLast = _resultSegments;
 

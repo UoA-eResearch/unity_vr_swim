@@ -3,20 +3,30 @@
 // This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
 
 using UnityEngine;
-
-#if UNITY_EDITOR
 using UnityEditor;
-#endif
 
 namespace Crest
 {
     /// <summary>
     /// Provides out-scattering based on the camera's underwater depth. It scales down environmental lighting
-    /// (directional light, reflections, ambient etc) with the underwater depth. This works with vanilla lighting, but 
+    /// (directional light, reflections, ambient etc) with the underwater depth. This works with vanilla lighting, but
     /// uncommon or custom lighting will require a custom solution (use this for reference).
     /// </summary>
-    public class UnderwaterEnvironmentalLighting : MonoBehaviour
+    [AddComponentMenu(Internal.Constants.MENU_PREFIX_EXAMPLE + "Underwater Environmental Lighting")]
+    public class UnderwaterEnvironmentalLighting : CustomMonoBehaviour
     {
+        /// <summary>
+        /// The version of this asset. Can be used to migrate across versions. This value should
+        /// only be changed when the editor upgrades the version.
+        /// </summary>
+        [SerializeField, HideInInspector]
+#pragma warning disable 414
+        int _version = 0;
+#pragma warning restore 414
+
+        [Tooltip("How much this effect applies. Values less than 1 attenuate light less underwater. Value of 1 is physically based."), SerializeField, Range(0f, 3f)]
+        float _weight = 1f;
+
         Light _primaryLight;
         float _lightIntensity;
         float _ambientIntensity;
@@ -55,8 +65,8 @@ namespace Crest
             _reflectionIntensity = RenderSettings.reflectionIntensity;
             _fogDensity = RenderSettings.fogDensity;
 
-            Color density = OceanRenderer.Instance.OceanMaterial.GetColor("_DepthFogDensity");
-            _averageDensity = (density.r + density.g + density.b) / 3f;
+            var density = OceanRenderer.Instance.UnderwaterDepthFogDensity;
+            _averageDensity = (density.x + density.y + density.z) / 3f;
 
             _isInitialised = true;
         }
@@ -82,13 +92,17 @@ namespace Crest
 
         void LateUpdate()
         {
-            if (OceanRenderer.Instance == null)
+            if (OceanRenderer.Instance == null || UnderwaterRenderer.Instance == null)
             {
                 return;
             }
 
+            var density = OceanRenderer.Instance.UnderwaterDepthFogDensity;
+            _averageDensity = (density.x + density.y + density.z) / 3f;
+
             float depthMultiplier = Mathf.Exp(_averageDensity *
-                Mathf.Min(OceanRenderer.Instance.ViewerHeightAboveWater * DEPTH_OUTSCATTER_CONSTANT, 0f));
+                Mathf.Min(OceanRenderer.Instance.ViewerHeightAboveWater * DEPTH_OUTSCATTER_CONSTANT, 0f) *
+                _weight);
 
             // Darken environmental lighting when viewer underwater
             if (_primaryLight)
@@ -103,7 +117,7 @@ namespace Crest
 
 #if UNITY_EDITOR
     [CustomEditor(typeof(UnderwaterEnvironmentalLighting))]
-    public class UnderwaterEnvironmentalLightingEditor : Editor
+    public class UnderwaterEnvironmentalLightingEditor : CustomBaseEditor
     {
         public override void OnInspectorGUI()
         {

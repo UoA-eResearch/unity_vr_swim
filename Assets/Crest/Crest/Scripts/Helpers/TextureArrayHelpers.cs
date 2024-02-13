@@ -35,8 +35,9 @@ namespace Crest
             }
         }
 
-        // Unity 2018.* does not support blitting to texture arrays, so have
-        // implemented a custom version to clear to black
+        // Custom implementation of clear to black instead of blitting to a texture array as the latter breaks Xbox One
+        // and Xbox Series X. See #857 which changed to Graphics.Blit and #868 which reverts that change. Or see commit:
+        // https://github.com/wave-harmonic/crest/commit/9160898972051a276f12eff0bd9b832d2992ae62
         public static void ClearToBlack(RenderTexture dst)
         {
             if (s_clearToBlackShader == null)
@@ -65,31 +66,41 @@ namespace Crest
             return texture;
         }
 
-        public static Texture2DArray CreateTexture2DArray(Texture2D texture)
+        public static Texture2DArray CreateTexture2DArray(Texture2D texture, int depth)
         {
             var array = new Texture2DArray(
                 SMALL_TEXTURE_DIM, SMALL_TEXTURE_DIM,
-                LodDataMgr.MAX_LOD_COUNT,
+                depth,
                 texture.format,
                 false,
                 false
             );
 
-            for (int textureArrayIndex = 0; textureArrayIndex < LodDataMgr.MAX_LOD_COUNT; textureArrayIndex++)
+            for (var textureArrayIndex = 0; textureArrayIndex < array.depth; textureArrayIndex++)
             {
-                Graphics.CopyTexture(texture, 0, 0, array, textureArrayIndex, 0);
+                // There is a bug using Graphics.CopyTexture with Texture2DArray when "Texture Quality"
+                // (QualitySettings.masterTextureLimit) is not "Full Res" (0) where result is junk (white from what I
+                // have seen). Changing this setting at runtime might cause a hitch so use SetPixels for now.
+                // Reported to Unity on 2021.09.15.
+                // https://issuetracker.unity3d.com/product/unity/issues/guid/1365775
+                array.SetPixels(texture.GetPixels(0), textureArrayIndex, 0);
             }
+
+            array.Apply();
 
             return array;
         }
 
-#if UNITY_2019_3_OR_NEWER
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-#endif
         static void InitStatics()
         {
+            if (OceanRenderer.RunningWithoutGPU)
+            {
+                // No texture arrays when no graphics card..
+                return;
+            }
+
             // Init here from 2019.3 onwards
-            sp_LD_TexArray_Target = Shader.PropertyToID("_LD_TexArray_Target");
 
             if (_blackTextureArray == null)
             {
@@ -108,8 +119,8 @@ namespace Crest
 
         static void CreateBlackTexArray()
         {
-            _blackTextureArray = CreateTexture2DArray(Texture2D.blackTexture);
-            _blackTextureArray.name = "Black Texture2DArray";
+            _blackTextureArray = CreateTexture2DArray(Texture2D.blackTexture, LodDataMgr.MAX_LOD_COUNT);
+            _blackTextureArray.name = "Crest Black Texture2DArray";
         }
     }
 }

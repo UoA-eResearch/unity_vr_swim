@@ -9,6 +9,7 @@
 
 CBUFFER_START(CrestOceanSurfaceDrivenValues)
 uint _LD_SliceIndex;
+int _CrestLodChange;
 CBUFFER_END
 
 // This must exactly match struct with same name in C#
@@ -21,11 +22,11 @@ struct CascadeParams
 	float _oneOverTextureRes;
 	float _texelWidth;
 	float _weight;
-	// Align to 32 bytes
-	float __padding;
+	float _maxWavelength;
 };
 
 StructuredBuffer<CascadeParams> _CrestCascadeData;
+StructuredBuffer<CascadeParams> _CrestCascadeDataSource;
 
 // This must exactly match struct with same name in C#
 // :PerCascadeInstanceData
@@ -40,6 +41,7 @@ struct PerCascadeInstanceData
 };
 
 StructuredBuffer<PerCascadeInstanceData> _CrestPerCascadeInstanceData;
+StructuredBuffer<PerCascadeInstanceData> _CrestPerCascadeInstanceDataSource;
 
 Texture2DArray _LD_TexArray_AnimatedWaves;
 Texture2DArray _LD_TexArray_WaveBuffer;
@@ -49,13 +51,13 @@ Texture2DArray _LD_TexArray_Foam;
 Texture2DArray _LD_TexArray_Flow;
 Texture2DArray _LD_TexArray_DynamicWaves;
 Texture2DArray _LD_TexArray_Shadow;
+Texture2DArray _LD_TexArray_Albedo;
 
 // These are used in lods where we operate on data from
 // previously calculated lods. Used in simulations and
 // shadowing for example.
 Texture2DArray _LD_TexArray_AnimatedWaves_Source;
 Texture2DArray _LD_TexArray_WaveBuffer_Source;
-Texture2DArray _LD_TexArray_SeaFloorDepth_Source;
 Texture2DArray _LD_TexArray_ClipSurface_Source;
 Texture2DArray _LD_TexArray_Foam_Source;
 Texture2DArray _LD_TexArray_Flow_Source;

@@ -19,7 +19,6 @@ namespace Crest
         float _rayStepSize;
 
         float _minLength = 0f;
-        bool _valid = false;
 
         /// <summary>
         /// Constructor. The length of the ray and the step size must be given here. The smaller the step size, the greater the accuracy.
@@ -39,7 +38,7 @@ namespace Crest
             {
                 stepCount = maxStepCount;
                 _rayStepSize = _rayLength / (stepCount - 1f);
-                Debug.LogWarning($"RayTraceHelper: ray steps exceed maximum ({maxStepCount}), step size increased to {_rayStepSize} to reduce step count.");
+                Debug.LogWarning($"Crest: RayTraceHelper: ray steps exceed maximum ({maxStepCount}), step size increased to {_rayStepSize} to reduce step count.");
             }
 
             _queryPos = new Vector3[stepCount];
@@ -77,16 +76,10 @@ namespace Crest
         {
             o_distance = -1f;
 
-            if (!_valid)
-            {
-                return false;
-            }
-
             var status = OceanRenderer.Instance.CollisionProvider.Query(GetHashCode(), _minLength, _queryPos, _queryResult, null, null);
 
             if (!OceanRenderer.Instance.CollisionProvider.RetrieveSucceeded(status))
             {
-                _valid = false;
                 return false;
             }
 

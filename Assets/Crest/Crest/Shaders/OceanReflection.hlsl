@@ -3,9 +3,6 @@
 // This file is subject to the MIT License as seen in the root of this folder structure (LICENSE)
 
 #if _PROCEDURALSKY_ON
-uniform half3 _SkyBase, _SkyAwayFromSun, _SkyTowardsSun;
-uniform half _SkyDirectionality;
-
 half3 SkyProceduralDP(in const half3 i_refl, in const half3 i_lightDir)
 {
 	half dp = dot(i_refl, i_lightDir);
@@ -22,38 +19,16 @@ half3 SkyProceduralDP(in const half3 i_refl, in const half3 i_lightDir)
 #endif
 
 #if _PLANARREFLECTIONS_ON
-uniform sampler2D _ReflectionTex;
-half _PlanarReflectionNormalsStrength;
-half _PlanarReflectionIntensity;
-
-void PlanarReflection(in const half4 i_screenPos, in const half3 i_n_pixel, inout half3 io_colour)
+void PlanarReflection(in const half4 i_screenPos, in const half3 i_n_pixel, in const float i_pixelZ, inout half3 io_colour)
 {
 	half4 screenPos = i_screenPos;
-	screenPos.xy += _PlanarReflectionNormalsStrength * i_n_pixel.xz;
-	half4 refl = tex2Dproj(_ReflectionTex, UNITY_PROJ_COORD(screenPos));
+	screenPos.xy += max(1.0, i_pixelZ * _PlanarReflectionDistanceFactor) * _PlanarReflectionNormalsStrength * i_n_pixel.xz;
+	half4 refl = SAMPLE_TEXTURE2D(_ReflectionTex, sampler_ReflectionTex, screenPos.xy / screenPos.w);
 	// If more than four layers are used on terrain, they will appear black if HDR is enabled on the planar reflection
 	// camera. Reflection alpha is probably a negative value.
 	io_colour = lerp(io_colour, refl.rgb, _PlanarReflectionIntensity * saturate(refl.a));
 }
 #endif // _PLANARREFLECTIONS_ON
-
-#if _OVERRIDEREFLECTIONCUBEMAP_ON
-samplerCUBE _ReflectionCubemapOverride;
-#endif // _OVERRIDEREFLECTIONCUBEMAP_ON
-
-uniform half _Specular;
-uniform half _Roughness;
-uniform half _FresnelPower;
-uniform float  _RefractiveIndexOfAir;
-uniform float  _RefractiveIndexOfWater;
-
-
-#if _COMPUTEDIRECTIONALLIGHT_ON
-uniform half _DirectionalLightFallOff;
-uniform half _DirectionalLightFarDistance;
-uniform half _DirectionalLightFallOffFar;
-uniform half _DirectionalLightBoost;
-#endif
 
 float CalculateFresnelReflectionCoefficient(float cosTheta)
 {
@@ -65,7 +40,17 @@ float CalculateFresnelReflectionCoefficient(float cosTheta)
 	return R_theta;
 }
 
-void ApplyReflectionSky(in const half3 i_view, in const half3 i_n_pixel, in const half3 i_lightDir, in const half i_shadow, in const half4 i_screenPos, in const float i_pixelZ, in const half i_weight, inout half3 io_col)
+void ApplyReflectionSky
+(
+	in const half3 i_view,
+	in const half3 i_n_pixel,
+	in const half3 i_lightDir,
+	in const half i_shadow,
+	in const half4 i_screenPos,
+	in const float i_pixelZ,
+	in const half i_weight,
+	inout half3 io_col
+)
 {
 	// Reflection
 	half3 refl = reflect(-i_view, i_n_pixel);
@@ -83,7 +68,7 @@ void ApplyReflectionSky(in const half3 i_view, in const half3 i_n_pixel, in cons
 	// sample sky cubemap
 #if _OVERRIDEREFLECTIONCUBEMAP_ON
 	// User-provided cubemap
-	half4 val = texCUBE(_ReflectionCubemapOverride, refl);
+	half4 val = SAMPLE_TEXTURECUBE(_ReflectionCubemapOverride, sampler_ReflectionCubemapOverride, refl);
 	skyColour = val.rgb;
 #else
 	Unity_GlossyEnvironmentData envData;
@@ -94,12 +79,12 @@ void ApplyReflectionSky(in const half3 i_view, in const half3 i_n_pixel, in cons
 	float interpolator = unity_SpecCube0_BoxMin.w;
 	// Branch optimization recommended by: https://catlikecoding.com/unity/tutorials/rendering/part-8/
 	UNITY_BRANCH
-	if (interpolator < 0.99999) 
+	if (interpolator < 0.99999)
 	{
 		float3 probe1 = Unity_GlossyEnvironment(UNITY_PASS_TEXCUBE_SAMPLER(unity_SpecCube1, unity_SpecCube0), unity_SpecCube1_HDR, envData);
 		skyColour = lerp(probe1, probe0, interpolator);
 	}
-	else 
+	else
 	{
 		skyColour = probe0;
 	}
@@ -112,7 +97,7 @@ void ApplyReflectionSky(in const half3 i_view, in const half3 i_n_pixel, in cons
 
 	// Override with anything in the planar reflections
 #if _PLANARREFLECTIONS_ON
-	PlanarReflection(i_screenPos, i_n_pixel, skyColour);
+	PlanarReflection(i_screenPos, i_n_pixel, i_pixelZ, skyColour);
 #endif
 
 	// Add primary light
@@ -134,7 +119,17 @@ void ApplyReflectionSky(in const half3 i_view, in const half3 i_n_pixel, in cons
 }
 
 #if _UNDERWATER_ON
-void ApplyReflectionUnderwater(in const half3 i_view, in const half3 i_n_pixel, in const half3 i_lightDir, in const half i_shadow, in const half4 i_screenPos, half3 scatterCol, in const half i_weight, inout half3 io_col)
+void ApplyReflectionUnderwater
+(
+	in const half3 i_view,
+	in const half3 i_n_pixel,
+	in const half3 i_lightDir,
+	in const half i_shadow,
+	in const half4 i_screenPos,
+	half3 scatterCol,
+	in const half i_weight,
+	inout half3 io_col
+)
 {
 	const half3 underwaterColor = scatterCol;
 	// The the angle of outgoing light from water's surface

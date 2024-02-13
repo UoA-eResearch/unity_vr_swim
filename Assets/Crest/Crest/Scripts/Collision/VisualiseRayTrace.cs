@@ -9,8 +9,19 @@ namespace Crest
     /// <summary>
     /// Debug draw a line trace from this gameobjects position, in this gameobjects forward direction.
     /// </summary>
-    public class VisualiseRayTrace : MonoBehaviour
+    [ExecuteDuringEditMode]
+    [AddComponentMenu(Internal.Constants.MENU_PREFIX_DEBUG + "Visualise Ray Trace")]
+    public class VisualiseRayTrace : CustomMonoBehaviour
     {
+        /// <summary>
+        /// The version of this asset. Can be used to migrate across versions. This value should
+        /// only be changed when the editor upgrades the version.
+        /// </summary>
+        [SerializeField, HideInInspector]
+#pragma warning disable 414
+        int _version = 0;
+#pragma warning restore 414
+
         RayTraceHelper _rayTrace = new RayTraceHelper(50f, 2f);
 
         void Update()
@@ -22,7 +33,7 @@ namespace Crest
 
             // Even if only a single ray trace is desired, this still must be called every frame until Trace() returns true
             _rayTrace.Init(transform.position, transform.forward);
-            if (_rayTrace.Trace(out float dist))
+            if (_rayTrace.Trace(out var dist))
             {
                 var endPos = transform.position + transform.forward * dist;
                 Debug.DrawLine(transform.position, endPos, Color.green);

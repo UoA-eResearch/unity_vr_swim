@@ -19,9 +19,7 @@ namespace Crest
         /// </summary>
         public static int _lastUpdateFrame = -1;
 
-#if UNITY_2019_3_OR_NEWER
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-#endif
         static void InitStatics()
         {
             // Init here from 2019.3 onwards
@@ -81,6 +79,19 @@ namespace Crest
             {
                 ocean._lodDataClipSurface.BuildCommandBuffer(ocean, buf);
             }
+
+            if (ocean._lodDataAlbedo != null && ocean._lodDataAlbedo.enabled)
+            {
+                ocean._lodDataAlbedo.BuildCommandBuffer(ocean, buf);
+            }
+        }
+
+        public static void FlipDataBuffers(OceanRenderer ocean)
+        {
+            foreach (var rd in ocean._lodTransform._renderData)
+            {
+                rd.Flip();
+            }
         }
 
         /// <summary>
@@ -99,6 +110,12 @@ namespace Crest
             _buf.Clear();
 
             BuildLodData(OceanRenderer.Instance, _buf);
+
+            if (OceanRenderer.Instance.ViewCamera != null)
+            {
+                // Fixes flickering non mesh renderer renderers (like particles). Method is undocumented.
+                Camera.SetupCurrent(OceanRenderer.Instance.ViewCamera);
+            }
 
             // This will execute at the beginning of the frame before the graphics queue
             Graphics.ExecuteCommandBuffer(_buf);

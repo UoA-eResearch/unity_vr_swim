@@ -15,7 +15,6 @@ Shader "Crest/Underwater Curtain"
 		[Toggle] _SubSurfaceShallowColour("Sub-Surface Shallow Colour", Float) = 1
 		[Toggle] _Transparency("Transparency", Float) = 1
 		[Toggle] _Caustics("Caustics", Float) = 1
-		[Toggle] _CompileShaderWithDebugInfo("Compile Shader With Debug Info (D3D11)", Float) = 0
 	}
 
 	SubShader
@@ -37,7 +36,7 @@ Shader "Crest/Underwater Curtain"
 			#pragma vertex Vert
 			#pragma fragment Frag
 
-			#pragma multi_compile_instancing
+			// #pragma enable_d3d11_debug_symbols
 
 			// Use multi_compile because these keywords are copied over from the ocean material. With shader_feature,
 			// the keywords would be stripped from builds. Unused shader variants are stripped using a build processor.
@@ -46,28 +45,25 @@ Shader "Crest/Underwater Curtain"
 			#pragma multi_compile_local __ _TRANSPARENCY_ON
 			#pragma multi_compile_local __ _CAUSTICS_ON
 			#pragma multi_compile_local __ _SHADOWS_ON
-			#pragma multi_compile_local __ _COMPILESHADERWITHDEBUGINFO_ON
-
-			#if _COMPILESHADERWITHDEBUGINFO_ON
-			#pragma enable_d3d11_debug_symbols
-			#endif
 
 			#include "UnityCG.cginc"
 			#include "Lighting.cginc"
 
+			#include "../Helpers/BIRP/Core.hlsl"
+
+			#include "../ShaderLibrary/Common.hlsl"
+
 			#include "../OceanGlobals.hlsl"
 			#include "../OceanInputsDriven.hlsl"
+			#include "../OceanShaderData.hlsl"
 			#include "../OceanHelpersNew.hlsl"
+			#include "../OceanShaderHelpers.hlsl"
+			#include "../OceanLightingHelpers.hlsl"
 			#include "UnderwaterShared.hlsl"
-
-			float _HeightOffset;
-			UNITY_DECLARE_SCREENSPACE_TEXTURE(_CameraDepthTexture);
 
 			#include "../OceanEmission.hlsl"
 
 			#define MAX_OFFSET 5.0
-
-			sampler2D _Normals;
 
 			struct Attributes
 			{
@@ -108,9 +104,9 @@ Shader "Crest/Underwater Curtain"
 				//   up to cover the whole screen, but it only needs to get pushed up to the horizon level to meet the water surface
 
 				// view coordinate frame for camera
-				const float3 right   = unity_CameraToWorld._11_21_31;
-				const float3 up      = unity_CameraToWorld._12_22_32;
-				const float3 forward = unity_CameraToWorld._13_23_33;
+				const float3 right   = UNITY_MATRIX_I_V._11_21_31;
+				const float3 up      = UNITY_MATRIX_I_V._12_22_32;
+				const float3 forward = -UNITY_MATRIX_I_V._13_23_33;
 
 				const float3 nearPlaneCenter = _WorldSpaceCameraPos + forward * _ProjectionParams.y * 1.001;
 				// Spread verts across the near plane.
@@ -189,35 +185,43 @@ Shader "Crest/Underwater Curtain"
 				const float pixelZ = LinearEyeDepth(input.positionCS.z);
 				const half3 screenPos = input.foam_screenPos.yzw;
 				const half2 uvDepth = screenPos.xy / screenPos.z;
-				const float sceneZ01 = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_CameraDepthTexture, uvDepth).x;
+				const float sceneZ01 = SAMPLE_TEXTURE2D_X(_CameraDepthTexture, sampler_CameraDepthTexture, uvDepth).x;
 				const float sceneZ = LinearEyeDepth(sceneZ01);
 
 				const CascadeParams cascadeData0 = _CrestCascadeData[_LD_SliceIndex];
 				const CascadeParams cascadeData1 = _CrestCascadeData[_LD_SliceIndex + 1];
 
 				const float3 lightDir = _WorldSpaceLightPos0.xyz;
+				const half3 lightCol = _LightColor0;
 				const half3 n_pixel = 0.0;
 				const half3 bubbleCol = 0.0;
 
-				float3 dummy = 0.0;
-				half sss = 0.;
-				const float3 uv_slice = WorldToUV(_WorldSpaceCameraPos.xz, cascadeData0, _LD_SliceIndex);
-				SampleDisplacements(_LD_TexArray_AnimatedWaves, uv_slice, 1.0, dummy, sss);
-
-				// depth and shadow are computed in ScatterColour when underwater==true, using the LOD1 texture.
-				const float depth = 0.0;
 				const half shadow = 1.0;
+				const half sss = 0.0;
 
-				const float meshScaleLerp = _CrestPerCascadeInstanceData[_LD_SliceIndex]._meshScaleLerp;
-				const float baseCascadeScale = _CrestCascadeData[0]._scale;
-				const half3 scatterCol = ScatterColour(depth, _WorldSpaceCameraPos, lightDir, view, shadow, true, true, sss, meshScaleLerp, baseCascadeScale, cascadeData0);
+				half seaFloorDepth = CREST_OCEAN_DEPTH_BASELINE;
+#if _SUBSURFACESHALLOWCOLOUR_ON
+				{
+					// compute scatter colour from cam pos. two scenarios this can be called:
+					// 1. rendering ocean surface from bottom, in which case the surface may be some distance away. use the scatter
+					//    colour at the camera, not at the surface, to make sure its consistent.
+					// 2. for the underwater skirt geometry, we don't have the lod data sampled from the verts with lod transitions etc,
+					//    so just approximate by sampling at the camera position.
+					// this used to sample LOD1 but that doesnt work in last LOD, the data will be missing.
+					const float3 uv_slice = WorldToUV(_WorldSpaceCameraPos.xz, cascadeData0, _LD_SliceIndex);
+					SampleSeaDepth(_LD_TexArray_SeaFloorDepth, uv_slice, 1.0, seaFloorDepth);
+				}
+#endif // _SUBSURFACESHALLOWCOLOUR_ON
+
+				const half3 scatterCol = ScatterColour(seaFloorDepth, shadow, sss, view, _CrestAmbientLighting, lightDir, lightCol, true);
 
 				half3 sceneColour = UNITY_SAMPLE_SCREENSPACE_TEXTURE(_BackgroundTexture, input.grabPos.xy / input.grabPos.w).rgb;
 
 #if _CAUSTICS_ON
 				if (sceneZ01 != 0.0)
 				{
-					ApplyCaustics(view, lightDir, sceneZ, _Normals, true, sceneColour, cascadeData0, cascadeData1);
+					float3 scenePos = _WorldSpaceCameraPos - view * sceneZ / dot(UNITY_MATRIX_I_V._13_23_33, view);
+					ApplyCaustics(_CausticsTiledTexture, _CausticsDistortionTiledTexture, input.positionCS.xy, scenePos, lightDir, sceneZ, true, sceneColour, _LD_SliceIndex + 1, cascadeData1);
 				}
 #endif // _CAUSTICS_ON
 
