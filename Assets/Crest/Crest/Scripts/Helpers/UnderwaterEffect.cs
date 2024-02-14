@@ -18,7 +18,6 @@ namespace Crest
     /// not close to water.
     /// </summary>
     [ExecuteDuringEditMode]
-    [System.Obsolete("No longer supported. UnderwaterEffect has been replaced with UnderwaterRenderer.")]
     [AddComponentMenu(Internal.Constants.MENU_PREFIX_SCRIPTS + "Underwater Effect")]
     public partial class UnderwaterEffect : CustomMonoBehaviour
     {

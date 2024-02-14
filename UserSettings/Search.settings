@@ -1,13 +1,16 @@
 trackSelection = true
 refreshSearchWindowsInPlayMode = false
 fetchPreview = true
-defaultFlags = 0
+defaultFlags = 264
 keepOpen = false
 queryFolder = "Assets"
 onBoardingDoNotAskAgain = true
 showPackageIndexes = false
 showStatusBar = false
 scopes = {
+	"last_search.5A656512" = "ref=\"Assets/Resources/OVRCustomHandPrefab_L.prefab\""
+	"OpenInspectorPreview.5A656512" = "0"
+	"currentGroup.5A656512" = "asset"
 }
 providers = {
 	performance = {

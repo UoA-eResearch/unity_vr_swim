@@ -1,0 +1,483 @@
+Using pre-set license
+Built from '2023.2/staging' branch; Version is '2023.2.8f1 (a3bb09f8c8c4) revision 10730249'; Using compiler version '193431935'; Build Type 'Release'
+OS: 'Windows 11  (10.0.22631) 64bit Enterprise' Language: 'en' Physical Memory: 65224 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 1
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2023.2.8f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker6
+-projectPath
+C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim
+-logFile
+Logs/AssetImportWorker6.log
+-srvPort
+55616
+-job-worker-count
+15
+-background-job-worker-count
+8
+-asset-garbage-collectors
+1
+Successfully changed project path to: C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim
+C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gfx=262144"
+Player connection [32124] Host "[IP] 130.216.44.223 [Port] 0 [Flags] 2 [Guid] 1599314804 [EditorId] 1599314804 [Version] 1048832 [Id] WindowsEditor(7,VRDesktop1) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined multi-casting on [225.0.0.222:54997]...
+Player connection [32124] Host "[IP] 130.216.44.223 [Port] 0 [Flags] 2 [Guid] 1599314804 [EditorId] 1599314804 [Version] 1048832 [Id] WindowsEditor(7,VRDesktop1) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 15
+[Physics::Module] Initialized MultithreadedJobDispatcher with 15 workers.
+Library Redirect Path: Library/
+Refreshing native plugins compatible for Editor in 7.04 ms, found 10 plugins.
+Preloading 3 native plugins for Editor in 2.87 ms.
+Initialize engine version: 2023.2.8f1 (a3bb09f8c8c4)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/Users/jbri364/Documents/GitHub NEW/unity_vr_swim/Assets
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce RTX 4090 (ID=0x2684)
+    Vendor:   NVIDIA
+    VRAM:     24156 MB
+    Driver:   31.0.15.3619
+Shader 'Oculus/OVRMRCameraFrameLit': fallback shader 'Alpha-Diffuse' not found
+Shader 'Scene/HighlightsAndShadows': fallback shader 'Off' not found
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56828
+Begin MonoManager ReloadAssembly
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/MetroSupport/UnityEditor.UWP.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2023.2.8f1/Editor/Data/PlaybackEngines/AndroidPlayer/UnityEditor.Android.Extensions.dll
+Registered in 0.005044 seconds.
+- Loaded All Assemblies, in  0.365 seconds
+Native extension for Android target not found
+Android Extension - Scanning For ADB Devices 297 ms
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Mono: successfully reloaded assembly
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+- Finished resetting the current domain, in  0.649 seconds
+Domain Reload Profiling: 1012ms
+	BeginReloadAssembly (119ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (0ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (1ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (11ms)
+	initialDomainReloadingComplete (46ms)
+	LoadAllAssembliesAndSetupDomain (157ms)
+		LoadAssemblies (117ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (155ms)
+			TypeCache.Refresh (154ms)
+				TypeCache.ScanAssembly (141ms)
+			BuildScriptInfoCaches (0ms)
+			ResolveRequiredComponents (0ms)
+	FinalizeReload (650ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (604ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (396ms)
+			SetLoadedEditorAssemblies (2ms)
+			BeforeProcessingInitializeOnLoad (8ms)
+			ProcessInitializeOnLoadAttributes (154ms)
+			ProcessInitializeOnLoadMethodAttributes (43ms)
+			AfterProcessingInitializeOnLoad (0ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (0ms)
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Begin MonoManager ReloadAssembly
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+C:\build\output\Unity-Technologies\mono\mono\metadata\icall.c:1842:
+Symbol file LoadedFromMemory is not a mono symbol file
+- Loaded All Assemblies, in  0.666 seconds
+'Assets/Crest/Crest/Scripts/LodData/RegisterLodDataInput.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+'Assets/Crest/Crest/Scripts/LodData/RegisterLodDataInput.cs' contains partial class of Unity.Object, exactly 1 of the partial classes needs to be in a file with the same filename. This is to know the one that can be referenced from ie. GameObjects
+Refreshing native plugins compatible for Editor in 7.15 ms, found 10 plugins.
+Native extension for Android target not found
+Native extension for UWP target not found
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+System.Reflection.TargetInvocationException: Exception has been thrown by the target of an invocation. ---> System.NullReferenceException: Object reference not set to an instance of an object
+  at Unity.XR.Oculus.OculusLoader.AssetPathToAbsolutePath (System.String assetPath) [0x0003d] in .\Library\PackageCache\com.unity.xr.oculus@4.1.2\Runtime\OculusLoader.cs:287 
+  at Unity.XR.Oculus.OculusLoader.EditorLoadOVRPlugin () [0x00084] in .\Library\PackageCache\com.unity.xr.oculus@4.1.2\Runtime\OculusLoader.cs:272 
+  at (wrapper managed-to-native) System.Reflection.RuntimeMethodInfo.InternalInvoke(System.Reflection.RuntimeMethodInfo,object,object[],System.Exception&)
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x0006a] in <f3af34af023b44c791c7d6a0f562f99c>:0 
+   --- End of inner exception stack trace ---
+  at System.Reflection.RuntimeMethodInfo.Invoke (System.Object obj, System.Reflection.BindingFlags invokeAttr, System.Reflection.Binder binder, System.Object[] parameters, System.Globalization.CultureInfo culture) [0x00083] in <f3af34af023b44c791c7d6a0f562f99c>:0 
+  at System.Reflection.MethodBase.Invoke (System.Object obj, System.Object[] parameters) [0x00000] in <f3af34af023b44c791c7d6a0f562f99c>:0 
+  at UnityEditor.EditorAssemblies.ProcessInitializeOnLoadMethodAttributes () [0x00056] in <71384c30e42c4bcf9ce4acef4223ee2b>:0 
+UnityEngine.Debug:ExtractStackTraceNoAlloc (byte*,int,string)
+UnityEngine.StackTraceUtility:ExtractStackTrace ()
+UnityEngine.DebugLogHandler:Internal_Log (UnityEngine.LogType,UnityEngine.LogOption,string,UnityEngine.Object)
+UnityEngine.DebugLogHandler:LogFormat (UnityEngine.LogType,UnityEngine.Object,string,object[])
+UnityEngine.Logger:Log (UnityEngine.LogType,object)
+UnityEngine.Debug:LogError (object)
+UnityEditor.EditorAssemblies:ProcessInitializeOnLoadMethodAttributes ()
+
+Mono: successfully reloaded assembly
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+- Finished resetting the current domain, in  0.591 seconds
+Domain Reload Profiling: 1254ms
+	BeginReloadAssembly (274ms)
+		ExecutionOrderSort (0ms)
+		DisableScriptedObjects (6ms)
+		BackupInstance (0ms)
+		ReleaseScriptingObjects (0ms)
+		CreateAndSetChildDomain (33ms)
+	RebuildCommonClasses (35ms)
+	RebuildNativeTypeToScriptingClass (12ms)
+	initialDomainReloadingComplete (23ms)
+	LoadAllAssembliesAndSetupDomain (318ms)
+		LoadAssemblies (254ms)
+		RebuildTransferFunctionScriptingTraits (0ms)
+		AnalyzeDomain (150ms)
+			TypeCache.Refresh (116ms)
+				TypeCache.ScanAssembly (99ms)
+			BuildScriptInfoCaches (22ms)
+			ResolveRequiredComponents (10ms)
+	FinalizeReload (591ms)
+		ReleaseScriptCaches (0ms)
+		RebuildScriptCaches (0ms)
+		SetupLoadedEditorAssemblies (471ms)
+			LogAssemblyErrors (0ms)
+			InitializePlatformSupportModulesInManaged (17ms)
+			SetLoadedEditorAssemblies (2ms)
+			BeforeProcessingInitializeOnLoad (50ms)
+			ProcessInitializeOnLoadAttributes (336ms)
+			ProcessInitializeOnLoadMethodAttributes (61ms)
+			AfterProcessingInitializeOnLoad (4ms)
+			EditorAssembliesLoaded (0ms)
+		ExecutionOrderSort2 (0ms)
+		AwakeInstancesAfterBackupRestoration (7ms)
+Shader 'Scene/HighlightsAndShadows': fallback shader 'Off' not found
+Shader 'Oculus/OVRMRCameraFrameLit': fallback shader 'Alpha-Diffuse' not found
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Refreshing native plugins compatible for Editor in 6.76 ms, found 10 plugins.
+Preloading 3 native plugins for Editor in 0.14 ms.
+Unloading 164 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 3509 unused Assets / (2.4 MB). Loaded Objects now: 4182.
+Memory consumption went from 171.5 MB to 169.1 MB.
+Total: 7.445900 ms (FindLiveObjects: 0.387000 ms CreateObjectMapping: 0.470500 ms MarkObjects: 5.231500 ms  DeleteObjects: 1.355600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 26267.345007 seconds.
+  path: Assets/Crest/Crest/Scripts/Helpers/UnderwaterEffect.cs
+  artifactKey: Guid(3189b4f2b56a4cd4bab9b4e3d761a0bf) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Scripts/Helpers/UnderwaterEffect.cs using Guid(3189b4f2b56a4cd4bab9b4e3d761a0bf) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '409dcad8d3ce81b303aceb19f8a69f34') in 0.1011815 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000020 seconds.
+  path: Assets/Crest/Crest/Shaders/Underwater/Resources
+  artifactKey: Guid(f14419637c41e46cfa6a3b2dea3f0929) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Shaders/Underwater/Resources using Guid(f14419637c41e46cfa6a3b2dea3f0929) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '3516843373b146a6fe4efcccd59b7d42') in 0.0116446 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Crest/Crest-Examples/LakesAndRivers/Terrain/Data/Terrain_2_3_f3ed9c1f-cb52-413a-a7d7-8e03961f4d5b.asset
+  artifactKey: Guid(b36b59c372bc94465859a94571a11b5b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/LakesAndRivers/Terrain/Data/Terrain_2_3_f3ed9c1f-cb52-413a-a7d7-8e03961f4d5b.asset using Guid(b36b59c372bc94465859a94571a11b5b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '59f63cbdc742a633a2be75bc26d4bac3') in 0.050223 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 3
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Crest/Crest-Examples/LakesAndRivers/Terrain/Textures/Grass_B
+  artifactKey: Guid(114460a2d76391b498c8f6f0773901fb) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/LakesAndRivers/Terrain/Textures/Grass_B using Guid(114460a2d76391b498c8f6f0773901fb) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '1aac636a15e07d7b0c138aea7bd0dcf8') in 0.0109347 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Crest/Crest-Examples/Shared/Effects/LightFlares
+  artifactKey: Guid(ee5a30b12906543e1947323083c49ad8) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/Shared/Effects/LightFlares using Guid(ee5a30b12906543e1947323083c49ad8) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'ad6a42098a209f4abeefe57384457f6e') in 0.0116716 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000024 seconds.
+  path: Assets/Crest/Crest/Scripts/Reflection/OceanPlanarReflection.cs
+  artifactKey: Guid(da05aab3ba773644eb187d19c55bb05a) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Scripts/Reflection/OceanPlanarReflection.cs using Guid(da05aab3ba773644eb187d19c55bb05a) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'cb3eb0e1f1b03644a8132b230bbf5bbb') in 0.0118306 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000069 seconds.
+  path: Assets/Crest/Crest/Shaders/Resources/UpdateDynWaves.compute
+  artifactKey: Guid(e0b46027038401541bc8aca64aa33d39) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Shaders/Resources/UpdateDynWaves.compute using Guid(e0b46027038401541bc8aca64aa33d39) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'bb00e15919c31d82449e9d589138bfb4') in 0.0100982 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000062 seconds.
+  path: Assets/Crest/Crest/Scripts/LodData/LodDataMgrSeaFloorDepth.cs
+  artifactKey: Guid(46959cbcd50e30841ab50c207d6a6dec) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Scripts/LodData/LodDataMgrSeaFloorDepth.cs using Guid(46959cbcd50e30841ab50c207d6a6dec) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '970b32b341e27ed6f176b0e3f09d0b77') in 0.0132065 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.103148 seconds.
+  path: Assets/Crest/Crest/Scripts/Interaction/ObjectWaterInteraction.cs
+  artifactKey: Guid(e66dbc64761412d41801763633a21b35) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Scripts/Interaction/ObjectWaterInteraction.cs using Guid(e66dbc64761412d41801763633a21b35) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '863a660d3ea8209474b83c7f225a1357') in 0.0104772 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000063 seconds.
+  path: Assets/Crest/Crest-Examples/Examples/Animations/Examples_Animation_CameraSideView.anim
+  artifactKey: Guid(1bf160e08852e4735be6673360490ad0) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/Examples/Animations/Examples_Animation_CameraSideView.anim using Guid(1bf160e08852e4735be6673360490ad0) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '694e35690e21e06223c961aecb44d3f1') in 0.0182774 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000045 seconds.
+  path: Assets/Crest/Crest-Examples/Shared/WaveSpectra/WavesBoatScene.asset
+  artifactKey: Guid(691aad324f2d2be4abf8123c36963da5) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/Shared/WaveSpectra/WavesBoatScene.asset using Guid(691aad324f2d2be4abf8123c36963da5) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'ba8e5aa17b641e05d99648306e385c8c') in 0.0256372 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000075 seconds.
+  path: Assets/Crest/Crest/Icons
+  artifactKey: Guid(1d22f46fb2fc04251aace9e3f73552dd) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Icons using Guid(1d22f46fb2fc04251aace9e3f73552dd) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'd9d509fe32f6b956ad34966224af169f') in 0.0086427 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000091 seconds.
+  path: Assets/Crest/Crest/Scripts/Interaction/FloatingObjectBase.cs
+  artifactKey: Guid(dacf763e8ebd5a64f9e282af4e8f815b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Scripts/Interaction/FloatingObjectBase.cs using Guid(dacf763e8ebd5a64f9e282af4e8f815b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '58383e6f221e8d1f3e050e80fafdb76d') in 0.0088353 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/Crest/Crest/Shaders/Underwater/UnderwaterEffectIncludes.hlsl
+  artifactKey: Guid(020541128f1bd4478b0dccc10f7ccaca) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Shaders/Underwater/UnderwaterEffectIncludes.hlsl using Guid(020541128f1bd4478b0dccc10f7ccaca) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '4c67263181a6df88875d37e790f13ab6') in 0.0074299 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000041 seconds.
+  path: Assets/Crest/Crest-Examples/Examples/Animations/Examples_Animator_UndewaterLighting.controller
+  artifactKey: Guid(4786fd266280e4a15a811cc563e61b63) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/Examples/Animations/Examples_Animator_UndewaterLighting.controller using Guid(4786fd266280e4a15a811cc563e61b63) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'b54172bcb8912145904cca28d61e04cf') in 0.0194272 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 8
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/Crest/Crest-Examples/BoatDev/Scripts
+  artifactKey: Guid(1c6822f750b4596469ffad83d33a4cd9) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/BoatDev/Scripts using Guid(1c6822f750b4596469ffad83d33a4cd9) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'e2f57afbbe11b03b6b5f0d8dda81e9de') in 0.0084386 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000066 seconds.
+  path: Assets/Crest/Crest/Shaders/OceanInputs/FoamOverride.shader
+  artifactKey: Guid(b6a746f025d0b4281a602898f9333230) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Shaders/OceanInputs/FoamOverride.shader using Guid(b6a746f025d0b4281a602898f9333230) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '2ecebc5dcb32d48dea20025b55dd0cd6') in 0.0125076 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000097 seconds.
+  path: Assets/Crest/Crest-Examples/Examples/Materials/Examples_Material_AlbedoParticles.mat
+  artifactKey: Guid(d3fc258a65f784b49a0216e2bfd666c4) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/Examples/Materials/Examples_Material_AlbedoParticles.mat using Guid(d3fc258a65f784b49a0216e2bfd666c4) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '6e0c7012cd938e4e5c563e6d382a6cd8') in 0.0300588 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Crest/Crest/Materials/OceanInputs/WaterHeightFromGeometryMax.mat
+  artifactKey: Guid(683f41c248824994082af6c6d5c53245) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Materials/OceanInputs/WaterHeightFromGeometryMax.mat using Guid(683f41c248824994082af6c6d5c53245) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '5f5913d7712e50e0203e9f6a4a27a17e') in 0.0163435 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Crest/Crest-Examples/Examples/Audio/Examples_Audio_WaterPier.flac
+  artifactKey: Guid(87844326d709c4375a39023c2ef63faa) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest-Examples/Examples/Audio/Examples_Audio_WaterPier.flac using Guid(87844326d709c4375a39023c2ef63faa) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '7d43c8c3a6f514b6d996e13cd802c4d0') in 0.3279276 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Sim_Settings_Animated_Waves.asset
+  artifactKey: Guid(7dcb797da7b6eef4ebecdf58ed2014ea) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Sim_Settings_Animated_Waves.asset using Guid(7dcb797da7b6eef4ebecdf58ed2014ea) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '6d476f10cde36feb31dc328c6e225b42') in 0.0141026 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000028 seconds.
+  path: Assets/Crest/Crest/Scripts/LodData/RegisterClipSurfaceInput.cs
+  artifactKey: Guid(cdff4e1b753d044b5a7dcf91a7e7b863) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Scripts/LodData/RegisterClipSurfaceInput.cs using Guid(cdff4e1b753d044b5a7dcf91a7e7b863) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '244824050b2a8fc545cbf97095e0b3b7') in 0.0097026 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 0
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000062 seconds.
+  path: Assets/Adaptive Performance/AdaptivePerformanceGeneralSettings.asset
+  artifactKey: Guid(1e7540e3e73d8ca4b8c33b07f8fa65a3) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Adaptive Performance/AdaptivePerformanceGeneralSettings.asset using Guid(1e7540e3e73d8ca4b8c33b07f8fa65a3) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'a97d832ca0fd0057b8e2cc63efffaf01') in 0.0213991 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 6
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000037 seconds.
+  path: Assets/CustomFoamSettings.asset
+  artifactKey: Guid(d5284a60d3902e24e92f13620663af7b) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/CustomFoamSettings.asset using Guid(d5284a60d3902e24e92f13620663af7b) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: 'a371de1bcfe3cc88b0814b1c5bbe16ca') in 0.0113273 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000078 seconds.
+  path: Assets/Crest/Crest/Textures
+  artifactKey: Guid(9203ab9db94afb9409cd53877dcd5c42) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Crest/Crest/Textures using Guid(9203ab9db94afb9409cd53877dcd5c42) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '5ab06da968ab7eebb1a8648d362b77a4') in 0.0094786 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000087 seconds.
+  path: Assets/Materials/mako_655_03.mat
+  artifactKey: Guid(cf9075abf7c8c6345b31f42f59438911) Importer(2089858483,192608db42251d675da83286b1cce702)
+Start importing Assets/Materials/mako_655_03.mat using Guid(cf9075abf7c8c6345b31f42f59438911) Importer(2089858483,192608db42251d675da83286b1cce702) (ScriptedImporter)Generated GUIDs only implemented for interfaces!
+ -> (artifact id: '37451e481153bc60891b7e92148d7ebd') in 0.1696838 seconds
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 6
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
